@@ -12,9 +12,16 @@ namespace EnermyTest
         public float shootInterval = 2f;   // time between shots
         public GameObject projectilePrefab;
         public float projectileSpeed = 5f;
+        public float radialCount;
 
         private Transform player;
         private float shootTimer;
+        
+        // Attacking Mode
+        public bool trackEnermy;
+        public bool shootradial;
+        public int burstCount;
+        
         
         // Start is called before the first frame update
         void Start()
@@ -33,23 +40,54 @@ namespace EnermyTest
             shootTimer  -= Time.deltaTime;
             if (shootTimer <= 0f)
             {
-                Vector3 direction = player.position - transform.position;
-                ShootAtPlayer(direction);
+                StartCoroutine(ShootBurst(burstCount, 0.2f));
+                
                 shootTimer = shootInterval;
             }
         }
 
         // ReSharper disable Unity.PerformanceAnalysis
-        void ShootAtPlayer(Vector3 direction)
+        void Shoot(Vector3 direction)
         {
-            // Small offset so bullet spawns outside the enemy’s collider
-            Vector3 spawnPos = transform.position + (Vector3)(direction * 0.15f);
-
-            GameObject proj = Instantiate(projectilePrefab, spawnPos, Quaternion.identity);
+            GameObject proj = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
             Rigidbody2D rb = proj.GetComponent<Rigidbody2D>();
             if (rb != null)
             {
                 rb.velocity = direction * projectileSpeed;
+            }
+        }
+        
+        void ShootRadial()
+        {
+            float angleStep = 360f / radialCount;
+            float angle = 0f;
+
+            for (int i = 0; i < radialCount; i++)
+            {
+                float dirX = Mathf.Cos(angle * Mathf.Deg2Rad);
+                float dirY = Mathf.Sin(angle * Mathf.Deg2Rad);
+
+                Vector2 direction = new Vector2(dirX, dirY).normalized;
+                Shoot(direction);
+
+                angle += angleStep;
+            }
+        }
+        
+        IEnumerator ShootBurst(int count, float delay)
+        {
+            for (int i = 0; i < count; i++)
+            {
+                if (trackEnermy)
+                {
+                    Vector3 direction = player.position - transform.position;
+                    Shoot(direction.normalized);
+                }
+                if (shootradial)
+                {
+                    ShootRadial();
+                }
+                yield return new WaitForSeconds(delay);
             }
         }
     }

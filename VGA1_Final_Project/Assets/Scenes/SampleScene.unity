@@ -134,7 +134,8 @@ GameObject:
   - component: {fileID: 264237215}
   - component: {fileID: 264237214}
   - component: {fileID: 264237213}
-  m_Layer: 0
+  - component: {fileID: 264237217}
+  m_Layer: 8
   m_Name: Character
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -208,7 +209,7 @@ Rigidbody2D:
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 1
-  m_AngularDrag: 0.05
+  m_AngularDrag: 100
   m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -288,6 +289,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &264237217
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 264237212}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c61830f9a294b04786cb33384d53478, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -393,7 +406,7 @@ GameObject:
   - component: {fileID: 798965420}
   - component: {fileID: 798965419}
   - component: {fileID: 798965418}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Enermy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -415,7 +428,11 @@ MonoBehaviour:
   moveSpeed: 2
   shootInterval: 2
   projectilePrefab: {fileID: 7866476202368515216, guid: fec66b2be62f65f44b115c1d85344129, type: 3}
-  projectileSpeed: 0.5
+  projectileSpeed: 5
+  radialCount: 12
+  trackEnermy: 0
+  shootradial: 1
+  burstCount: 5
 --- !u!70 &798965419
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -539,7 +556,7 @@ Transform:
   m_GameObject: {fileID: 798965417}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 2, y: 2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
