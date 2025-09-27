@@ -3,7 +3,8 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Tunnel
   layers:
   - Default
   - TransparentFX
@@ -15,11 +16,11 @@ TagManager:
   - EnermyProjectile
   - Player
   - Enermy
-  - Layer 1
-  - Layer 2
-  - Layer 3
-  - 
-  - 
+  - Layer1
+  - Layer2
+  - Layer3
+  - Layer1Prop
+  - Layer2Prop
   - 
   - 
   - 
