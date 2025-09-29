@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Player;
 using UnityEngine;
 
 namespace Cainos.PixelArtTopDown_Basic
@@ -13,11 +14,13 @@ namespace Cainos.PixelArtTopDown_Basic
         private void Start()
         {
             animator = GetComponent<Animator>();
+            speed = PlayerHealth.Instance.Speed;
         }
 
 
         private void Update()
         {
+            speed = PlayerHealth.Instance.Speed;
             Vector2 dir = Vector2.zero;
             if (Input.GetKey(KeyCode.A))
             {
