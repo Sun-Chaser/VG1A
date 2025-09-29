@@ -5,6 +5,7 @@
 using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 
@@ -17,12 +18,14 @@ namespace Player
         public TMP_Text textXP;
         public TMP_Text textHealth;
         public TMP_Text textSpeed;
+        public TMP_Text textTimer;
 
         public Transform heartsParent;
         public GameObject heartContainerPrefab;
 
         public int xp;
         public float timeElapsed;
+        public float pointTimer; // Raw use for now
 
         private void Start()
         {
@@ -35,27 +38,41 @@ namespace Player
 
             xp = 0;
             timeElapsed = 0;
+            pointTimer = 0;
             
             textSpeed.text = "Add Speed XP:" + (((int)PlayerHealth.Instance.Speed - 2.0) * 5);
             textHealth.text = "Add Heart XP:" + (((int)PlayerHealth.Instance.Health - 3) * 5);
+            textTimer.text = "2:00";
         }
 
         private void Update()
         {
             timeElapsed += Time.deltaTime;
+            pointTimer += Time.deltaTime;
+            if (timeElapsed >= 120)
+            {
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            }
             
             // For test use only
-            if (timeElapsed >= 5)
+            if (pointTimer >= 5)
             {
-                timeElapsed = 0;
+                pointTimer = 0;
                 xp += 10;
             }
             UpdateXPDisplay();
+            UpdateTimerDisplay();
         }
 
         private void UpdateXPDisplay()
         {
             textXP.text = xp.ToString();
+        }
+
+        private void UpdateTimerDisplay()
+        {
+            int timeLeft = 120 - (int)timeElapsed;
+            textTimer.text = (timeLeft / 60) + ":" + (timeLeft % 60);
         }
 
         public void UpdateHeartsHUD()
