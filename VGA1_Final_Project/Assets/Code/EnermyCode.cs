@@ -13,6 +13,10 @@ namespace EnermyTest
         public GameObject projectilePrefab;
         public float projectileSpeed = 5f;
         public float radialCount;
+        public float detectionRadius = 6f; // start chasing/shooting inside this
+        public float stopDistance = 1.2f;  // stop moving when this close
+        public float burstDelay = 0.2f;    // spacing between shots inside a burst
+        private bool isBursting = false;   // prevent overlapping bursts
 
         private Transform player;
         private float shootTimer;
@@ -35,15 +39,29 @@ namespace EnermyTest
         void Update()
         {
             if (!player) return;
-            
-            // Shooting
-            shootTimer  -= Time.deltaTime;
-            if (shootTimer <= 0f)
+
+            // Only act if player is close enough
+            float dist = Vector2.Distance(player.position, transform.position);
+            bool inRange = dist <= detectionRadius;
+
+            if (inRange)
             {
-                StartCoroutine(ShootBurst(burstCount, 0.2f));
-                
-                shootTimer = shootInterval;
+                // Move toward player until close enough
+                if (dist > stopDistance)
+                {
+                    Vector3 dir = (player.position - transform.position).normalized;
+                    transform.position += dir * (moveSpeed * Time.deltaTime);
+                }
+
+                // Shoot on a timer (don’t start a new burst while one is running)
+                shootTimer -= Time.deltaTime;
+                if (shootTimer <= 0f && !isBursting)
+                {
+                    StartCoroutine(ShootBurst(burstCount, burstDelay));
+                    shootTimer = shootInterval;
+                }
             }
+            // else: out of range → idle (no move, no shoot)
         }
 
         // ReSharper disable Unity.PerformanceAnalysis
@@ -76,6 +94,7 @@ namespace EnermyTest
         
         IEnumerator ShootBurst(int count, float delay)
         {
+            isBursting = true;
             for (int i = 0; i < count; i++)
             {
                 if (trackEnermy)
@@ -89,6 +108,7 @@ namespace EnermyTest
                 }
                 yield return new WaitForSeconds(delay);
             }
+            isBursting = false;
         }
     }
 }
