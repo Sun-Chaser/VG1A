@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 1306158360301816774}
   - component: {fileID: 1139069426451344245}
   - component: {fileID: 3121606533923876429}
+  - component: {fileID: -7983704919184528195}
   m_Layer: 9
   m_Name: Enermy
   m_TagString: Untagged
@@ -161,11 +162,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7cc8cc6969be1424d8e1f4a82ab3ad59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 2
-  shootInterval: 2
-  projectilePrefab: {fileID: 7866476202368515216, guid: fec66b2be62f65f44b115c1d85344129, type: 3}
+  moveSpeed: 0.5
+  shootInterval: 3
+  projectilePrefab: {fileID: 7866476202368515216, guid: fec66b2be62f65f44b115c1d85344129,
+    type: 3}
   projectileSpeed: 5
   radialCount: 12
+  detectionRadius: 10
+  stopDistance: 3
+  burstDelay: 0.2
   trackEnermy: 0
   shootradial: 1
-  burstCount: 5
+  burstCount: 3
+--- !u!95 &-7983704919184528195
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6647686738918194346}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: fc0db69afa5cfda44a8512dd0e12062e, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
