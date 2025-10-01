@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6399584183960416867}
   - component: {fileID: 6085990598718456479}
   - component: {fileID: 8758509563189589875}
+  - component: {fileID: -2470976557674344393}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -151,3 +152,43 @@ MonoBehaviour:
   runSpeed: 1.5
   cam: {fileID: 0}
   dir8: 0
+  fireballPrefab: {fileID: 0}
+  firePoint: {fileID: 0}
+  fireSpeed: 3
+  fireCooldown: 1
+  cachedAimDir: {x: 1, y: 0}
+--- !u!58 &-2470976557674344393
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5792930818333194311}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.008361697, y: -0.15385789}
+  serializedVersion: 2
+  m_Radius: 0.17675412
