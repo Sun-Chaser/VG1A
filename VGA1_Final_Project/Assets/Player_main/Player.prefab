@@ -13,13 +13,10 @@ GameObject:
   - component: {fileID: 6399584183960416867}
   - component: {fileID: 6085990598718456479}
   - component: {fileID: 8758509563189589875}
-<<<<<<< Updated upstream
   m_Layer: 0
-=======
   - component: {fileID: -2470976557674344393}
   - component: {fileID: 8854852488455910622}
   m_Layer: 8
->>>>>>> Stashed changes
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -157,8 +154,6 @@ MonoBehaviour:
   runSpeed: 3.5
   cam: {fileID: 0}
   dir8: 0
-<<<<<<< Updated upstream
-=======
   fireballPrefab: {fileID: 1510347638462973449, guid: cf8d56f99afc67f42b1b228c2ff91a60,
     type: 3}
   firePoint: {fileID: 0}
@@ -194,13 +189,6 @@ CircleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0.008361697, y: -0.33826634}
-  serializedVersion: 2
-  m_Radius: 0.36116257
---- !u!114 &8854852488455910622
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -217,4 +205,9 @@ MonoBehaviour:
   maxTotalHealth: 5
   speed: 3
   maxSpeed: 5
->>>>>>> Stashed changes
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.008361697, y: -0.15385789}
+  serializedVersion: 2
+  m_Radius: 0.17675412
