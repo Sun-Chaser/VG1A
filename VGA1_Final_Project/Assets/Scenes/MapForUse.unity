@@ -4273,6 +4273,33 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 260268137}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &261271165 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6647686738918194346, guid: 0d4d6191df510284b8e22dadae933a23,
+    type: 3}
+  m_PrefabInstance: {fileID: 2983065473043212652}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &261271171
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 261271165}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: fc0db69afa5cfda44a8512dd0e12062e, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1001 &265371507
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -84315,6 +84342,78 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+--- !u!1001 &2983065473043212652
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 6647686738918194346, guid: 0d4d6191df510284b8e22dadae933a23,
+        type: 3}
+      propertyPath: m_Name
+      value: Enermy
+      objectReference: {fileID: 0}
+    - target: {fileID: 8325346729197481734, guid: 0d4d6191df510284b8e22dadae933a23,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -4.87
+      objectReference: {fileID: 0}
+    - target: {fileID: 8325346729197481734, guid: 0d4d6191df510284b8e22dadae933a23,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8325346729197481734, guid: 0d4d6191df510284b8e22dadae933a23,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8325346729197481734, guid: 0d4d6191df510284b8e22dadae933a23,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8325346729197481734, guid: 0d4d6191df510284b8e22dadae933a23,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8325346729197481734, guid: 0d4d6191df510284b8e22dadae933a23,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8325346729197481734, guid: 0d4d6191df510284b8e22dadae933a23,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8325346729197481734, guid: 0d4d6191df510284b8e22dadae933a23,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8325346729197481734, guid: 0d4d6191df510284b8e22dadae933a23,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8325346729197481734, guid: 0d4d6191df510284b8e22dadae933a23,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6647686738918194346, guid: 0d4d6191df510284b8e22dadae933a23,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 261271171}
+  m_SourcePrefab: {fileID: 100100000, guid: 0d4d6191df510284b8e22dadae933a23, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -84326,3 +84425,4 @@ SceneRoots:
   - {fileID: 1447849906}
   - {fileID: 219086462}
   - {fileID: 1075609661}
+  - {fileID: 2983065473043212652}
