@@ -3241,8 +3241,18 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -2470976557674344393, guid: 91ffb977058ae5943b6ea46d76ee8a17,
         type: 3}
+      propertyPath: m_Radius
+      value: 0.27747187
+      objectReference: {fileID: 0}
+    - target: {fileID: -2470976557674344393, guid: 91ffb977058ae5943b6ea46d76ee8a17,
+        type: 3}
+      propertyPath: m_Offset.y
+      value: -0.22252813
+      objectReference: {fileID: 0}
+    - target: {fileID: -2470976557674344393, guid: 91ffb977058ae5943b6ea46d76ee8a17,
+        type: 3}
       propertyPath: m_IsTrigger
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2101678872892876239, guid: 91ffb977058ae5943b6ea46d76ee8a17,
         type: 3}
@@ -80635,7 +80645,7 @@ PrefabInstance:
     - target: {fileID: 1139069426451344245, guid: 0d4d6191df510284b8e22dadae933a23,
         type: 3}
       propertyPath: m_IsTrigger
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5714997849062841196, guid: 0d4d6191df510284b8e22dadae933a23,
         type: 3}

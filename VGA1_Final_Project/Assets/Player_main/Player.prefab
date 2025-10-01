@@ -13,10 +13,9 @@ GameObject:
   - component: {fileID: 6399584183960416867}
   - component: {fileID: 6085990598718456479}
   - component: {fileID: 8758509563189589875}
-  m_Layer: 0
   - component: {fileID: -2470976557674344393}
-  - component: {fileID: 8854852488455910622}
-  m_Layer: 8
+  - component: {fileID: -1062465936462482434}
+  m_Layer: 0
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -189,6 +188,13 @@ CircleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.5
+--- !u!114 &-1062465936462482434
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -205,9 +211,3 @@ MonoBehaviour:
   maxTotalHealth: 5
   speed: 3
   maxSpeed: 5
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0.008361697, y: -0.15385789}
-  serializedVersion: 2
-  m_Radius: 0.17675412
