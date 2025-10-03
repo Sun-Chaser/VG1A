@@ -12,9 +12,10 @@ public class FireBall : MonoBehaviour
     {
         Destroy(gameObject, lifetime);
     }
+    
     void OnTriggerEnter2D(Collider2D other)
     {
-        // ºöÂÔÍæ¼Ò
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         if (other.CompareTag("Player")) return;
 
         Destroy(gameObject);

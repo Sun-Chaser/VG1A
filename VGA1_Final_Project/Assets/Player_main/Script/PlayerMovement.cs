@@ -102,7 +102,7 @@ namespace Player
 
         public void ShootEvent()
         {
-            Shoot(cachedAimDir);  // Ö±½ÓÓÃ»º´æµÄ·½Ïò·¢Éä
+            Shoot(cachedAimDir);  // Ö±ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½Ä·ï¿½ï¿½ï¿½ï¿½ï¿½
         }
 
         void Shoot(Vector2 dir)
@@ -111,6 +111,7 @@ namespace Player
 
             Vector3 spawnPos = firePoint ? firePoint.position : transform.position;
             GameObject go = Instantiate(fireballPrefab, spawnPos, Quaternion.identity);
+            go.GetComponent<SpriteRenderer>().sortingLayerName = this.GetComponent<SpriteRenderer>().sortingLayerName;
 
             float z = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
             go.transform.rotation = Quaternion.Euler(0, 0, z);
