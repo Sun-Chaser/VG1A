@@ -3254,6 +3254,21 @@ PrefabInstance:
       propertyPath: m_IsTrigger
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -1062465936462482434, guid: 91ffb977058ae5943b6ea46d76ee8a17,
+        type: 3}
+      propertyPath: speed
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -1062465936462482434, guid: 91ffb977058ae5943b6ea46d76ee8a17,
+        type: 3}
+      propertyPath: maxSpeed
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: -1062465936462482434, guid: 91ffb977058ae5943b6ea46d76ee8a17,
+        type: 3}
+      propertyPath: maxTotalHealth
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 2101678872892876239, guid: 91ffb977058ae5943b6ea46d76ee8a17,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3324,6 +3339,11 @@ PrefabInstance:
       propertyPath: cam
       value: 
       objectReference: {fileID: 709835784}
+    - target: {fileID: 8758509563189589875, guid: 91ffb977058ae5943b6ea46d76ee8a17,
+        type: 3}
+      propertyPath: walkSpeed
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -80656,6 +80676,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Enermy
+      objectReference: {fileID: 0}
+    - target: {fileID: 6647686738918194346, guid: 0d4d6191df510284b8e22dadae933a23,
+        type: 3}
+      propertyPath: m_TagString
+      value: Enemy
       objectReference: {fileID: 0}
     - target: {fileID: 8325346729197481734, guid: 0d4d6191df510284b8e22dadae933a23,
         type: 3}

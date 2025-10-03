@@ -8,7 +8,7 @@ namespace EnermyTest
     public class ProjectileEnermy : MonoBehaviour
     {
         // Outlets
-        float lifeTime = 5f;
+        float lifeTime = 3f;
         
         // Start is called before the first frame update
         void Start()

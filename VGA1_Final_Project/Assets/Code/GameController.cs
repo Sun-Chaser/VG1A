@@ -27,6 +27,7 @@ namespace Player
         public float timeElapsed;
         public float pointTimer; // Raw use for now
 
+        int SpeedLevel = 1;
         private void Start()
         {
             // Should I use lists? Maybe :)
@@ -40,7 +41,7 @@ namespace Player
             timeElapsed = 0;
             pointTimer = 0;
             
-            textSpeed.text = "Add Speed XP:" + (((int)PlayerHealth.Instance.Speed - 2.0) * 5);
+            textSpeed.text = "Add Speed XP:" + ((int)(5 * SpeedLevel));
             textHealth.text = "Add Heart XP:" + (((int)PlayerHealth.Instance.Health - 3) * 5);
             textTimer.text = "2:00";
         }
@@ -152,13 +153,17 @@ namespace Player
 
         public void AddSpeed()
         {
-            int cost = (int)(PlayerHealth.Instance.Speed - 2.0) * 5;
+            
+            int cost = (int)(5 * SpeedLevel);
+
             if (PlayerHealth.Instance.Speed < PlayerHealth.Instance.MaxSpeed && xp >= cost)
             {
                 PlayerHealth.Instance.AddSpeed();
                 xp -= cost;
-                
-                textSpeed.text = "Add Speed XP:" + (((int)PlayerHealth.Instance.Speed - 2.0) * 5);
+                SpeedLevel++;
+
+
+                textSpeed.text = "Add Speed XP:" + ((int)(5 * SpeedLevel));
             }
         }
     }
