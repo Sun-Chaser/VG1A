@@ -23,7 +23,7 @@ namespace Player
         public Transform heartsParent;
         public GameObject heartContainerPrefab;
 
-        public int xp;
+        public static int xp;
         public float timeElapsed;
         public float pointTimer; // Raw use for now
 
@@ -43,7 +43,7 @@ namespace Player
             
             textSpeed.text = "Add Speed XP:" + ((int)(5 * SpeedLevel));
             textHealth.text = "Add Heart XP:" + (((int)PlayerHealth.Instance.Health - 3) * 5);
-            textTimer.text = "2:00";
+            textTimer.text = "1:00";
         }
 
         private void Update()
@@ -59,7 +59,7 @@ namespace Player
             if (pointTimer >= 5)
             {
                 pointTimer = 0;
-                xp += 10;
+                xp += 5;
             }
             UpdateXPDisplay();
             UpdateTimerDisplay();
@@ -166,6 +166,12 @@ namespace Player
                 textSpeed.text = "Add Speed XP:" + ((int)(5 * SpeedLevel));
             }
         }
+
+        public static void AddXP(int amount)
+        {
+            xp += amount;
+        }
+        
     }
 
 }

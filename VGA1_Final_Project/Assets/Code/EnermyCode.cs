@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Player;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
 
@@ -68,6 +69,8 @@ namespace EnermyTest
         void Shoot(Vector3 direction)
         {
             GameObject proj = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
+            proj.GetComponent<SpriteRenderer>()
+                .sortingLayerName = this.GetComponent<SpriteRenderer>().sortingLayerName;
             Rigidbody2D rb = proj.GetComponent<Rigidbody2D>();
             if (rb != null)
             {
@@ -115,6 +118,7 @@ namespace EnermyTest
         {
             if (other.GetComponentInParent<FireBall>())
             {
+                GameController.AddXP(5);
                 Destroy(gameObject);
             }
         }
