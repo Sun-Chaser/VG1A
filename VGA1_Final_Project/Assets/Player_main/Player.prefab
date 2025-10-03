@@ -14,9 +14,10 @@ GameObject:
   - component: {fileID: 6085990598718456479}
   - component: {fileID: 8758509563189589875}
   - component: {fileID: -2470976557674344393}
+  - component: {fileID: -1062465936462482434}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -74,9 +75,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingLayerID: -921336025
+  m_SortingLayer: 8
+  m_SortingOrder: 999
   m_Sprite: {fileID: -1920248660, guid: fdf56bf2c0b633940b834f68fddfc571, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -148,13 +149,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 075e9e7d8d95b3b42a8714ab4eb516d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  walkSpeed: 1
-  runSpeed: 1.5
   cam: {fileID: 0}
   dir8: 0
-  fireballPrefab: {fileID: 0}
+  fireballPrefab: {fileID: 1510347638462973449, guid: cf8d56f99afc67f42b1b228c2ff91a60,
+    type: 3}
   firePoint: {fileID: 0}
-  fireSpeed: 3
+  fireSpeed: 6
   fireCooldown: 1
   cachedAimDir: {x: 1, y: 0}
 --- !u!58 &-2470976557674344393
@@ -186,9 +186,26 @@ CircleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.008361697, y: -0.15385789}
+  m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.17675412
+  m_Radius: 0.5
+--- !u!114 &-1062465936462482434
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5792930818333194311}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4dba3bbaf31b44159f9e40967c2c3c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 3
+  maxHealth: 5
+  maxTotalHealth: 5
+  speed: 3
+  maxSpeed: 5

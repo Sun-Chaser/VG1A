@@ -3,6 +3,7 @@
  */
 
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Player
 {
@@ -31,7 +32,7 @@ namespace Player
         [SerializeField]
         private float maxTotalHealth;
         [SerializeField]
-        private float speed;
+        float speed;
         [SerializeField]
         private float maxSpeed;
 
@@ -71,13 +72,19 @@ namespace Player
 
             if (onHealthChangedCallback != null)
                 onHealthChangedCallback.Invoke();
+
+            if (health <= 0f)
+            {
+                Scene current = SceneManager.GetActiveScene();
+                SceneManager.LoadScene(current.buildIndex);
+            }
         }
 
         public void AddSpeed()
         {
             if (speed < maxSpeed)
             {
-                speed += 1.0f;
+                speed += 0.1f;
             }
         }
     }
