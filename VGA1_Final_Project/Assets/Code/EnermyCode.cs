@@ -110,6 +110,14 @@ namespace EnermyTest
             }
             isBursting = false;
         }
+        
+        void OnTriggerEnter2D(Collider2D other)
+        {
+            if (other.GetComponentInParent<FireBall>())
+            {
+                Destroy(gameObject);
+            }
+        }
     }
 }
 
