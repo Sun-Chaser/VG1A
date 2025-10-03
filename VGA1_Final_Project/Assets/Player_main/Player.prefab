@@ -75,8 +75,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -921336025
+  m_SortingLayer: 8
   m_SortingOrder: 999
   m_Sprite: {fileID: -1920248660, guid: fdf56bf2c0b633940b834f68fddfc571, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -149,8 +149,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 075e9e7d8d95b3b42a8714ab4eb516d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  walkSpeed: 2
-  runSpeed: 3.5
   cam: {fileID: 0}
   dir8: 0
   fireballPrefab: {fileID: 1510347638462973449, guid: cf8d56f99afc67f42b1b228c2ff91a60,
