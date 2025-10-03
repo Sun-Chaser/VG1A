@@ -76,7 +76,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 999
   m_Sprite: {fileID: 21300074, guid: 872dba149c5addb49ac3649c5b9247d6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -166,13 +166,13 @@ MonoBehaviour:
   shootInterval: 3
   projectilePrefab: {fileID: 7866476202368515216, guid: fec66b2be62f65f44b115c1d85344129,
     type: 3}
-  projectileSpeed: 3
+  projectileSpeed: 5
   radialCount: 12
-  detectionRadius: 6
-  stopDistance: 2
+  detectionRadius: 10
+  stopDistance: 3
   burstDelay: 0.2
-  trackEnermy: 1
-  shootradial: 0
+  trackEnermy: 0
+  shootradial: 1
   burstCount: 3
 --- !u!95 &-7983704919184528195
 Animator:

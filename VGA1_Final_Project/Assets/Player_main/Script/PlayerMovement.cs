@@ -21,6 +21,14 @@ public class PlayerMovement : MonoBehaviour
     public int dir8;
 
     bool shiftHeld;
+
+    public GameObject fireballPrefab; 
+    public Transform firePoint;      
+    public float fireSpeed = 12f;     
+    public float fireCooldown = 0.2f;  
+    float nextFireTime;
+    public Vector2 cachedAimDir = Vector2.right;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -71,11 +79,41 @@ public class PlayerMovement : MonoBehaviour
         animator.SetFloat("dir8", dir8);
 
         animator.SetBool("attack", attack);
-        
+
+        if (d.sqrMagnitude > 1e-6f) cachedAimDir = d.normalized;
+
     }
 
     private void FixedUpdate()
     {
 
     }
+
+    public void ShootEvent()
+    {
+        Shoot(cachedAimDir);  // 直接用缓存的方向发射
+    }
+
+    void Shoot(Vector2 dir)
+    {
+        if (!fireballPrefab) return;
+
+        Vector3 spawnPos = firePoint ? firePoint.position : transform.position;
+        GameObject go = Instantiate(fireballPrefab, spawnPos, Quaternion.identity);
+
+        float z = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+        go.transform.rotation = Quaternion.Euler(0, 0, z);
+
+        var prb = go.GetComponent<Rigidbody2D>();
+        if (prb)
+        {
+            prb.gravityScale = 0f;
+            prb.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
+            prb.velocity = dir * fireSpeed;
+        }
+        var myCol = GetComponent<Collider2D>();
+        var projCol = go.GetComponent<Collider2D>();
+        if (myCol && projCol) Physics2D.IgnoreCollision(myCol, projCol, true);
+    }
+
 }

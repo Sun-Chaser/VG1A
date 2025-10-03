@@ -70,8 +70,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -1869315837
-  m_SortingLayer: 0
+  m_SortingLayerID: -1944711159
+  m_SortingLayer: 3
   m_SortingOrder: 2
   m_Sprite: {fileID: -132900705, guid: dda6bbdb704d84847b38f9eced72bf59, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -93,15 +93,15 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 640111105731337441}
-  - component: {fileID: 5254692566041694770}
   - component: {fileID: 4880661344070375968}
+  - component: {fileID: 1627348354942900091}
   m_Layer: 0
   m_Name: Stairs Layer Trigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &640111105731337441
 Transform:
   m_ObjectHideFlags: 0
@@ -117,23 +117,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6075975974975622417}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5254692566041694770
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1847043458559656800}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7c3513c9018a5a9489aa2ee86a9d20f0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  direction: 2
-  layerUpper: Layer 2
-  sortingLayerUpper: Layer 2
-  layerLower: Layer 1
-  sortingLayerLower: Layer 1
 --- !u!68 &4880661344070375968
 EdgeCollider2D:
   m_ObjectHideFlags: 0
@@ -175,6 +158,21 @@ EdgeCollider2D:
   m_AdjacentEndPoint: {x: 0, y: 0}
   m_UseAdjacentStartPoint: 0
   m_UseAdjacentEndPoint: 0
+--- !u!114 &1627348354942900091
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1847043458559656800}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 606c0a1f508384309a6876f597f860aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  direction: 2
+  sortingLayerUpper: L2_Chars
+  sortingLayerLower: L1_Chars
 --- !u!1 &2405699924202088644
 GameObject:
   m_ObjectHideFlags: 0
@@ -503,8 +501,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -1869315837
-  m_SortingLayer: 0
+  m_SortingLayerID: -1944711159
+  m_SortingLayer: 3
   m_SortingOrder: 2
   m_Sprite: {fileID: -293941904, guid: dda6bbdb704d84847b38f9eced72bf59, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
