@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3049195524809167738}
   - component: {fileID: 1816763884416156756}
-  - component: {fileID: 2148293633093723447}
+  - component: {fileID: 4304418539419640950}
   m_Layer: 0
   m_Name: Stairs Layer Trigger
   m_TagString: Untagged
@@ -74,7 +74,7 @@ EdgeCollider2D:
   m_AdjacentEndPoint: {x: 0, y: 0}
   m_UseAdjacentStartPoint: 0
   m_UseAdjacentEndPoint: 0
---- !u!114 &2148293633093723447
+--- !u!114 &4304418539419640950
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
