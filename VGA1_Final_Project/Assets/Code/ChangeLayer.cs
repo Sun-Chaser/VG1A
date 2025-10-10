@@ -5,6 +5,7 @@ public class ChangeLayer : MonoBehaviour
 {
     [Header("Tag Settings")]
     public string playerTag = "Player";
+    public string enemyTag = "Enemy";
 
     [Header("Target Settings")]
     public SpriteRenderer targetRenderer;
@@ -24,7 +25,7 @@ public class ChangeLayer : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (!other.CompareTag(playerTag) || targetRenderer == null) return;
+        if (!(other.CompareTag(playerTag) || other.CompareTag(enemyTag)) || targetRenderer == null) return;
 
         string current = targetRenderer.sortingLayerName;
         string newLayer = current;
@@ -42,7 +43,7 @@ public class ChangeLayer : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        if (!other.CompareTag(playerTag) || targetRenderer == null) return;
+        if (!(other.CompareTag(playerTag) || other.CompareTag(enemyTag)) || targetRenderer == null) return;
 
         if (!string.IsNullOrEmpty(_originalLayer))
             targetRenderer.sortingLayerName = _originalLayer;
