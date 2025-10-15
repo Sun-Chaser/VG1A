@@ -72,8 +72,18 @@ namespace Player
 
         private void UpdateTimerDisplay()
         {
-            int timeLeft = 120 - (int)timeElapsed;
-            textTimer.text = (timeLeft / 60) + ":" + (timeLeft % 60);
+            int timeLeft = 75 - (int)timeElapsed;
+            String secondLeft = null;
+            if (timeLeft % 60 < 10)
+            {
+                secondLeft = "0" + timeLeft % 60;
+            }
+            else
+            {
+                secondLeft = "" + timeLeft % 60;
+            }
+            
+            textTimer.text = (timeLeft / 60) + ":" + secondLeft;
         }
 
         public void UpdateHeartsHUD()
