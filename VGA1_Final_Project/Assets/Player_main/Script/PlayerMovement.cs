@@ -8,7 +8,7 @@ namespace Player
 {
     public class PlayerMovement : MonoBehaviour
     {
-
+        public static PlayerMovement instance;
         float walkSpeed = 2.0f;
         float Speed;
         bool attack;
@@ -32,6 +32,8 @@ namespace Player
         float nextFireTime;
         public Vector2 cachedAimDir = Vector2.right;
 
+        public bool isPaused;
+
         // Start is called before the first frame update
         void Start()
         {
@@ -43,6 +45,11 @@ namespace Player
         // Update is called once per frame
         void Update()
         {
+            if (isPaused)
+            {
+                return;
+            }
+            
             shiftHeld = Input.GetKey(KeyCode.LeftShift);
             attack = Input.GetMouseButton(0);
 
@@ -93,6 +100,10 @@ namespace Player
 
             if (d.sqrMagnitude > 1e-6f) cachedAimDir = d.normalized;
 
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                MenuController.instance.Show();
+            }
         }
 
         private void FixedUpdate()
@@ -128,5 +139,9 @@ namespace Player
             if (myCol && projCol) Physics2D.IgnoreCollision(myCol, projCol, true);
         }
 
+        private void Awake()
+        {
+            instance = this;
+        }
     }
 }
