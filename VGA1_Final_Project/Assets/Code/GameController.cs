@@ -23,10 +23,11 @@ namespace Player
         public Transform heartsParent;
         public GameObject heartContainerPrefab;
 
-        public int xp;
+        public static int xp;
         public float timeElapsed;
         public float pointTimer; // Raw use for now
 
+        int SpeedLevel = 1;
         private void Start()
         {
             // Should I use lists? Maybe :)
@@ -40,9 +41,9 @@ namespace Player
             timeElapsed = 0;
             pointTimer = 0;
             
-            textSpeed.text = "Add Speed XP:" + (((int)PlayerHealth.Instance.Speed - 2.0) * 5);
+            textSpeed.text = "Add Speed XP:" + ((int)(5 * SpeedLevel));
             textHealth.text = "Add Heart XP:" + (((int)PlayerHealth.Instance.Health - 3) * 5);
-            textTimer.text = "2:00";
+            textTimer.text = "1:00";
         }
 
         private void Update()
@@ -58,7 +59,7 @@ namespace Player
             if (pointTimer >= 5)
             {
                 pointTimer = 0;
-                xp += 10;
+                xp += 5;
             }
             UpdateXPDisplay();
             UpdateTimerDisplay();
@@ -71,8 +72,18 @@ namespace Player
 
         private void UpdateTimerDisplay()
         {
-            int timeLeft = 120 - (int)timeElapsed;
-            textTimer.text = (timeLeft / 60) + ":" + (timeLeft % 60);
+            int timeLeft = 75 - (int)timeElapsed;
+            String secondLeft = null;
+            if (timeLeft % 60 < 10)
+            {
+                secondLeft = "0" + timeLeft % 60;
+            }
+            else
+            {
+                secondLeft = "" + timeLeft % 60;
+            }
+            
+            textTimer.text = (timeLeft / 60) + ":" + secondLeft;
         }
 
         public void UpdateHeartsHUD()
@@ -152,15 +163,25 @@ namespace Player
 
         public void AddSpeed()
         {
-            int cost = (int)(PlayerHealth.Instance.Speed - 2.0) * 5;
+            
+            int cost = (int)(5 * SpeedLevel);
+
             if (PlayerHealth.Instance.Speed < PlayerHealth.Instance.MaxSpeed && xp >= cost)
             {
                 PlayerHealth.Instance.AddSpeed();
                 xp -= cost;
-                
-                textSpeed.text = "Add Speed XP:" + (((int)PlayerHealth.Instance.Speed - 2.0) * 5);
+                SpeedLevel++;
+
+
+                textSpeed.text = "Add Speed XP:" + ((int)(5 * SpeedLevel));
             }
         }
+
+        public static void AddXP(int amount)
+        {
+            xp += amount;
+        }
+        
     }
 
 }
