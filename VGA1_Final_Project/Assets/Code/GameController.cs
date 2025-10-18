@@ -26,7 +26,7 @@ namespace Player
         public static int xp;
         public float timeElapsed;
         public float pointTimer; // Raw use for now
-
+        public int timeLimit = 75;
         int SpeedLevel = 1;
         private void Start()
         {
@@ -36,7 +36,7 @@ namespace Player
             PlayerHealth.Instance.onHealthChangedCallback += UpdateHeartsHUD;
             InstantiateHeartContainers();
             UpdateHeartsHUD();
-
+            
             xp = 0;
             timeElapsed = 0;
             pointTimer = 0;
@@ -50,7 +50,7 @@ namespace Player
         {
             timeElapsed += Time.deltaTime;
             pointTimer += Time.deltaTime;
-            if (timeElapsed >= 120)
+            if (timeElapsed >= timeLimit)
             {
                 SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             }
@@ -72,7 +72,7 @@ namespace Player
 
         private void UpdateTimerDisplay()
         {
-            int timeLeft = 75 - (int)timeElapsed;
+            int timeLeft = timeLimit - (int)timeElapsed;
             String secondLeft = null;
             if (timeLeft % 60 < 10)
             {
