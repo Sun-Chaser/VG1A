@@ -8,6 +8,10 @@ namespace EnermyTest
 {
     public class EnermyCode : MonoBehaviour
     {
+        public int maxHealth = 100;
+        public int currentHealth;
+        private EnermyHealthBar healthBar;
+        
         // Outlet
         public float moveSpeed = 2f;
         public float shootInterval = 2f;   // time between shots
@@ -31,9 +35,12 @@ namespace EnermyTest
         // Start is called before the first frame update
         void Start()
         {
+            healthBar = GetComponentInChildren<EnermyHealthBar>();
+            currentHealth = maxHealth;
+            healthBar.SetMaxHealth(maxHealth);
+            
             player = GameObject.FindGameObjectWithTag("Player").transform;
             shootTimer = shootInterval;
-
         }
 
         // Update is called once per frame
@@ -63,6 +70,8 @@ namespace EnermyTest
                 }
             }
             // else: out of range → idle (no move, no shoot)
+            
+            
         }
 
         // ReSharper disable Unity.PerformanceAnalysis
@@ -113,13 +122,24 @@ namespace EnermyTest
             }
             isBursting = false;
         }
+
+        void TakeDamage(int damage)
+        {
+            currentHealth -= damage;
+            if (currentHealth <= 0)
+            {
+                healthBar.SetMaxHealth(0);
+                Destroy(gameObject);
+            }
+            healthBar.SetHealth(currentHealth);
+        }
         
         void OnTriggerEnter2D(Collider2D other)
         {
             if (other.GetComponentInParent<FireBall>())
             {
                 GameController.AddXP(5);
-                Destroy(gameObject);
+                TakeDamage(10);
             }
         }
     }
