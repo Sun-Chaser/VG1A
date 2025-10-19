@@ -45275,6 +45275,7 @@ MonoBehaviour:
     type: 3}
   timeElapsed: 0
   pointTimer: 0
+  timeLimit: 75
 --- !u!4 &768245168
 Transform:
   m_ObjectHideFlags: 0
@@ -48399,6 +48400,31 @@ PrefabInstance:
         type: 3}
       propertyPath: maxTotalHealth
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 432183450675520411, guid: 91ffb977058ae5943b6ea46d76ee8a17,
+        type: 3}
+      propertyPath: m_Size.x
+      value: 0.6647248
+      objectReference: {fileID: 0}
+    - target: {fileID: 432183450675520411, guid: 91ffb977058ae5943b6ea46d76ee8a17,
+        type: 3}
+      propertyPath: m_Size.y
+      value: 0.6647248
+      objectReference: {fileID: 0}
+    - target: {fileID: 432183450675520411, guid: 91ffb977058ae5943b6ea46d76ee8a17,
+        type: 3}
+      propertyPath: m_Offset.x
+      value: -0.006162882
+      objectReference: {fileID: 0}
+    - target: {fileID: 432183450675520411, guid: 91ffb977058ae5943b6ea46d76ee8a17,
+        type: 3}
+      propertyPath: m_Offset.y
+      value: -0.29259163
+      objectReference: {fileID: 0}
+    - target: {fileID: 432183450675520411, guid: 91ffb977058ae5943b6ea46d76ee8a17,
+        type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2101678872892876239, guid: 91ffb977058ae5943b6ea46d76ee8a17,
         type: 3}
