@@ -40,6 +40,6 @@ public class ResultsController : MonoBehaviour
             yield return new WaitForSecondsRealtime(returnDelay);
         }
 
-        SceneManager.LoadScene("Menu");
+        SceneManager.LoadScene("MainMenu");
     }
 }
