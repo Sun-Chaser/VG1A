@@ -75,8 +75,11 @@ namespace Player
 
             if (health <= 0f)
             {
-                Scene current = SceneManager.GetActiveScene();
-                SceneManager.LoadScene(current.buildIndex);
+                if (PlayerPrefs.GetInt("HighestScore", 0) < GameController.score)
+                {
+                    PlayerPrefs.SetInt("HighestScore", GameController.score);
+                }
+                SceneManager.LoadScene("GameResults");
             }
         }
 
