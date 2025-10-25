@@ -6,22 +6,24 @@ using UnityEngine.TextCore.Text;
 
 namespace EnermyTest
 {
-    public class EnermyCode : MonoBehaviour
+    public class BossCode : MonoBehaviour
     {
-        public int maxHealth = 100;
+        private static readonly int MovingLeft = Animator.StringToHash("MovingLeft");
+        private static readonly int Level = Animator.StringToHash("Level");
+        public int maxHealth = 300;
         public int currentHealth;
         private EnermyHealthBar healthBar;
         
         // Outlet
-        public float moveSpeed = 2f;
-        public float shootInterval = 2f;   // time between shots
+        public float moveSpeed = 1f;
+        public float shootInterval = 3f;   // time between shots
         public GameObject projectilePrefab;
-        public float projectileSpeed = 5f;
+        public float projectileSpeed = 3f;
         public float radialCount;
-        public float detectionRadius = 6f; // start chasing/shooting inside this
-        public float stopDistance = 1.2f;  // stop moving when this close
+        public float detectionRadius = 10f; // start chasing/shooting inside this
+        public float stopDistance = 3f;  // stop moving when this close
         public float burstDelay = 0.2f;    // spacing between shots inside a burst
-        private bool isBursting = false;   // prevent overlapping bursts
+        private Animator animator;
 
         private Transform player;
         private float shootTimer;
@@ -41,6 +43,8 @@ namespace EnermyTest
             
             player = GameObject.FindGameObjectWithTag("Player").transform;
             shootTimer = shootInterval;
+            
+            animator = GetComponent<Animator>();
         }
 
         // Update is called once per frame
@@ -58,12 +62,13 @@ namespace EnermyTest
                 if (dist > stopDistance)
                 {
                     Vector3 dir = (player.position - transform.position).normalized;
+                    animator.SetBool(MovingLeft, dir.x < 0);
                     transform.position += dir * (moveSpeed * Time.deltaTime);
                 }
 
                 // Shoot on a timer (don’t start a new burst while one is running)
                 shootTimer -= Time.deltaTime;
-                if (shootTimer <= 0f && !isBursting)
+                if (shootTimer <= 0f)
                 {
                     StartCoroutine(ShootBurst(burstCount, burstDelay));
                     shootTimer = shootInterval;
@@ -71,7 +76,21 @@ namespace EnermyTest
             }
             // else: out of range → idle (no move, no shoot)
             
-            
+            if (currentHealth >= maxHealth * 0.66)
+            {
+                animator.SetInteger(Level, 1);
+
+            }
+            else if (currentHealth >= maxHealth * 0.33)
+            {
+                animator.SetInteger(Level, 2);
+
+            }
+            else
+            {
+                animator.SetInteger(Level, 3);
+
+            }
         }
 
         // ReSharper disable Unity.PerformanceAnalysis
@@ -103,24 +122,43 @@ namespace EnermyTest
                 angle += angleStep;
             }
         }
+
+        void Level1()
+        {
+            Vector3 direction = player.position - transform.position;
+            Shoot(direction.normalized);
+        }
+
+        void Level2()
+        {
+            burstCount = 5;
+            Vector3 direction = player.position - transform.position;
+            Shoot(direction.normalized);
+        }
+
+        void Level3()
+        {
+            ShootRadial();
+        }
         
         IEnumerator ShootBurst(int count, float delay)
         {
-            isBursting = true;
             for (int i = 0; i < count; i++)
             {
-                if (trackEnermy)
+                if (currentHealth >= maxHealth * 0.66)
                 {
-                    Vector3 direction = player.position - transform.position;
-                    Shoot(direction.normalized);
+                    Level1();
                 }
-                if (shootradial)
+                else if (currentHealth >= maxHealth * 0.33)
                 {
-                    ShootRadial();
+                    Level2();
+                }
+                else
+                {
+                    Level3();
                 }
                 yield return new WaitForSeconds(delay);
             }
-            isBursting = false;
         }
 
         void TakeDamage(int damage)
