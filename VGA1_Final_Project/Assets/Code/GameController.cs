@@ -125,7 +125,7 @@ namespace Player
         // ------------------ Existing UI helpers ------------------
         private void UpdateXPDisplay()
         {
-            textXP.text = "XP: " + xp;
+            textXP.text = xp.ToString();
         }
 
         private void UpdateScoreDisplay()
@@ -201,11 +201,13 @@ namespace Player
             }
         }
 
-        public void Heal()
+        public static void Heal()
         {
             int cost = 5;
             if (PlayerHealth.Instance.Health < PlayerHealth.Instance.MaxHealth && xp >= cost)
             {
+                print("Heal once");
+                SoundManager.instance.PlayHealClip();
                 PlayerHealth.Instance.Heal(1.0f);
                 xp -= cost;
             }
@@ -239,6 +241,7 @@ namespace Player
 
         public static void AddXP(int amount)
         {
+            SoundManager.instance.PlayLevelUpClip();
             xp += amount;
             score += amount;
         }

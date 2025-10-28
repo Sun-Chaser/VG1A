@@ -39,7 +39,9 @@ public class ChestSimple : MonoBehaviour
 
         if (highlight != null)
             highlight.SetActive(false);
-
+        
+        SoundManager.instance.PlayChestOpenClip();
+        
         if (openedImage != null)
         {
             this.GetComponent<SpriteRenderer>().sprite = openedImage;

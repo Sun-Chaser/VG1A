@@ -104,11 +104,11 @@ namespace Player
             {
                 MenuController.instance.Show();
             }
-        }
 
-        private void FixedUpdate()
-        {
-
+            if (Input.GetKeyDown(KeyCode.H))
+            {
+                GameController.Heal();
+            }
         }
 
         public void ShootEvent()
