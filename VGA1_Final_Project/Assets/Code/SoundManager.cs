@@ -6,9 +6,10 @@ public class SoundManager : MonoBehaviour
 {
     public static SoundManager instance;
     public AudioSource audioSource;
-    public AudioClip levelUpClip;
+    public AudioClip xpUpClip;
     public AudioClip chestOpenClip;
     public AudioClip healClip;
+    public AudioClip levelUpClip;
     
     void Awake()
     {
@@ -25,9 +26,9 @@ public class SoundManager : MonoBehaviour
         
     }
 
-    public void PlayLevelUpClip()
+    public void PlayXpUpClip()
     {
-        audioSource.PlayOneShot(levelUpClip);
+        audioSource.PlayOneShot(xpUpClip);
     }
 
     public void PlayChestOpenClip()
@@ -38,5 +39,10 @@ public class SoundManager : MonoBehaviour
     public void PlayHealClip()
     {
         audioSource.PlayOneShot(healClip);
+    }
+
+    public void PlayLevelUpClip()
+    {
+        audioSource.PlayOneShot(levelUpClip);
     }
 }

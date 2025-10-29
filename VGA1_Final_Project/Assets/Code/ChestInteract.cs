@@ -45,7 +45,7 @@ public class ChestSimple : MonoBehaviour
         if (openedImage != null)
         {
             this.GetComponent<SpriteRenderer>().sprite = openedImage;
-            GameController.AddXP(10);
+            GameController.instance.AddXP(10);
         }
 
         yield return new WaitForSeconds(destroyDelay);

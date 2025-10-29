@@ -14,13 +14,13 @@ namespace Cainos.PixelArtTopDown_Basic
         private void Start()
         {
             animator = GetComponent<Animator>();
-            speed = PlayerHealth.Instance.Speed;
+            speed = PlayerHealth.instance.Speed;
         }
 
 
         private void Update()
         {
-            speed = PlayerHealth.Instance.Speed;
+            speed = PlayerHealth.instance.Speed;
             Vector2 dir = Vector2.zero;
             if (Input.GetKey(KeyCode.A))
             {

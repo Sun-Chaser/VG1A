@@ -24,7 +24,7 @@ public class ResultsController : MonoBehaviour
         
         // Show score
         if (scoreText != null)
-            scoreText.text = $"Your Score: {GameController.score}";
+            scoreText.text = $"Your Score: {GameController.instance.score}";
 
         // Show highest score (default 0 if none)
         if (highestScoreText != null)
