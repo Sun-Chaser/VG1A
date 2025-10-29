@@ -10,7 +10,7 @@ namespace EnermyTest
     {
         private static readonly int MovingLeft = Animator.StringToHash("MovingLeft");
         private static readonly int Level = Animator.StringToHash("Level");
-        public int maxHealth = 300;
+        public int maxHealth = 900;
         public int currentHealth;
         private EnermyHealthBar healthBar;
         
@@ -21,17 +21,24 @@ namespace EnermyTest
         public float projectileSpeed = 3f;
         public float radialCount;
         public float detectionRadius = 10f; // start chasing/shooting inside this
-        public float stopDistance = 3f;  // stop moving when this close
+        public float stopDistance = 2f;  // stop moving when this close
         public float burstDelay = 0.2f;    // spacing between shots inside a burst
         private Animator animator;
 
         private Transform player;
         private float shootTimer;
         
+        private Coroutine healRoutine;
+        public float healTickInterval = 0.1f; // seconds between ticks
+        
         // Attacking Mode
         public bool trackEnermy;
         public bool shootradial;
-        public int burstCount;
+        public int burstCount; 
+        public GameObject summonPrefab;
+        private int summonTime = 1;
+        public GameObject orbitPrefab;
+
         
         
         // Start is called before the first frame update
@@ -76,7 +83,7 @@ namespace EnermyTest
             }
             // else: out of range → idle (no move, no shoot)
             
-            if (currentHealth >= maxHealth * 0.66)
+            if (currentHealth >= maxHealth * 0.67)
             {
                 animator.SetInteger(Level, 1);
 
@@ -84,7 +91,7 @@ namespace EnermyTest
             else if (currentHealth >= maxHealth * 0.33)
             {
                 animator.SetInteger(Level, 2);
-
+                StartHealing();
             }
             else
             {
@@ -125,27 +132,28 @@ namespace EnermyTest
 
         void Level1()
         {
-            Vector3 direction = player.position - transform.position;
-            Shoot(direction.normalized);
+            ShootRadial();
         }
 
         void Level2()
         {
-            burstCount = 5;
-            Vector3 direction = player.position - transform.position;
-            Shoot(direction.normalized);
+            if(summonTime-- > 0)
+                SummonCircle();
+            else
+                ShootRadial();
+                
         }
 
         void Level3()
         {
-            ShootRadial();
+            StartOrbitAttack();
         }
         
         IEnumerator ShootBurst(int count, float delay)
         {
             for (int i = 0; i < count; i++)
             {
-                if (currentHealth >= maxHealth * 0.66)
+                if (currentHealth >= maxHealth * 0.67)
                 {
                     Level1();
                 }
@@ -177,10 +185,69 @@ namespace EnermyTest
             if (other.GetComponentInParent<FireBall>())
             {
                 GameController.AddXP(5);
-                TakeDamage(10);
+                TakeDamage(100);
+            }
+        }
+
+        public void StartHealing()
+        {
+            if (currentHealth >= maxHealth * 0.67) return;
+            if (healRoutine != null) return;        // already healing
+            healRoutine = StartCoroutine(healing());
+        }
+
+        private System.Collections.IEnumerator healing()
+        {
+            while (currentHealth < maxHealth)
+            {
+                // at least 1 HP per tick so int division doesn't stall
+                int step = 2;
+                currentHealth = Mathf.Min((int)(maxHealth * 0.67f), currentHealth + step);
+
+                if (healthBar) healthBar.SetHealth(currentHealth);
+
+                // wait for next tick
+                yield return new WaitForSeconds(healTickInterval);
+            }
+            healRoutine = null;
+        }
+        
+        public void SummonCircle(int count = 4, float radius = 1.5f, float startAngleDeg = 0f)
+        {
+            if (!summonPrefab || count <= 0) return;
+        
+            Vector3 center = transform.position;
+            float step = 360f / count;
+        
+            for (int i = 0; i < count; i++)
+            {
+                float ang = (startAngleDeg + step * i) * Mathf.Deg2Rad;
+                Vector3 pos = center + new Vector3(Mathf.Cos(ang), Mathf.Sin(ang), 0f) * radius;
+        
+                GameObject obj = Instantiate(summonPrefab, pos, Quaternion.identity);
+                obj.transform.rotation = Quaternion.identity;       // world rotation = 0 
+                obj.transform.localRotation = Quaternion.identity;  // local rotation = 0 (in case prefab had rotation)
             }
         }
         
+        public void StartOrbitAttack(int count = 3, float radius = 3f, float angularSpeedDeg = 180f, float duration = 6f)
+        {
+            if (!orbitPrefab || count <= 0) return;
+            
+                float step = 360f / count;
+                for (int i = 0; i < count; i++)
+                {
+                    var obj = Instantiate(orbitPrefab, transform.position, Quaternion.identity);
+                    var orb = obj.GetComponent<OrbitingCode>();
+                    if (!orb) continue;
+            
+                    orb.target       = this.transform;
+                    orb.radius       = radius;
+                    orb.angularSpeed = angularSpeedDeg;
+                    orb.startAngleDeg= step * i;
+                    orb.lifetime     = duration;
+                }
+        }
         
     }
 }

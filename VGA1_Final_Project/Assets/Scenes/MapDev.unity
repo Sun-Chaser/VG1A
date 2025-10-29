@@ -40767,7 +40767,7 @@ PrefabInstance:
     - target: {fileID: 4219479761688629055, guid: adc4bf08e4ddbb24798b11614c6e4879,
         type: 3}
       propertyPath: maxHealth
-      value: 90
+      value: 900
       objectReference: {fileID: 0}
     - target: {fileID: 4219479761688629055, guid: adc4bf08e4ddbb24798b11614c6e4879,
         type: 3}
@@ -40777,8 +40777,14 @@ PrefabInstance:
     - target: {fileID: 4219479761688629055, guid: adc4bf08e4ddbb24798b11614c6e4879,
         type: 3}
       propertyPath: burstCount
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4219479761688629055, guid: adc4bf08e4ddbb24798b11614c6e4879,
+        type: 3}
+      propertyPath: orbitPrefab
+      value: 
+      objectReference: {fileID: 7866476202368515216, guid: 35defcd1715f6854c9117dc05ceb5d4b,
+        type: 3}
     - target: {fileID: 4219479761688629055, guid: adc4bf08e4ddbb24798b11614c6e4879,
         type: 3}
       propertyPath: radialCount
@@ -40787,8 +40793,14 @@ PrefabInstance:
     - target: {fileID: 4219479761688629055, guid: adc4bf08e4ddbb24798b11614c6e4879,
         type: 3}
       propertyPath: stopDistance
-      value: 1.5
+      value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 4219479761688629055, guid: adc4bf08e4ddbb24798b11614c6e4879,
+        type: 3}
+      propertyPath: summonPrefab
+      value: 
+      objectReference: {fileID: 6647686738918194346, guid: c9a000c9366145f46a3eb2e7dd8ca99d,
+        type: 3}
     - target: {fileID: 4219479761688629055, guid: adc4bf08e4ddbb24798b11614c6e4879,
         type: 3}
       propertyPath: shootInterval
@@ -40803,6 +40815,11 @@ PrefabInstance:
         type: 3}
       propertyPath: projectileSpeed
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4219479761688629055, guid: adc4bf08e4ddbb24798b11614c6e4879,
+        type: 3}
+      propertyPath: healTickInterval
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 4219479761688629055, guid: adc4bf08e4ddbb24798b11614c6e4879,
         type: 3}
@@ -45024,11 +45041,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ad99a3d8ef094822875b78fde1591ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  textXP: {fileID: 0}
-  textScore: {fileID: 0}
+  textXP: {fileID: 187975236}
+  textScore: {fileID: 797022144}
   textHealth: {fileID: 0}
   textSpeed: {fileID: 0}
-  textTimer: {fileID: 0}
+  textTimer: {fileID: 6405282}
   heartsParent: {fileID: 0}
   heartContainerPrefab: {fileID: 1000013667988280, guid: cb4f9d65cffdc40179703311c82adff8,
     type: 3}
