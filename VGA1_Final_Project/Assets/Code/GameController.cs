@@ -14,6 +14,7 @@ namespace Player
         private GameObject[] heartContainers;
         private Image[] heartFills;
         public TMP_Text textXP;
+        public TMP_Text textScore;
         public TMP_Text textHealth;
         public TMP_Text textSpeed;
         public TMP_Text textTimer;
@@ -22,13 +23,14 @@ namespace Player
         public GameObject heartContainerPrefab;
 
         public static int xp;
+        public static int score;
         public float timeElapsed;
         public float pointTimer; // Raw use for now
 
         public int timeLimit = 120;
         
         int SpeedLevel = 1;
-
+        
         // ------------------ Enemy Spawning (NEW) ------------------
         [Header("Spawning")]
         [Tooltip("All possible spawn points in the scene")]
@@ -72,6 +74,7 @@ namespace Player
             xp = 0;
             timeElapsed = 0;
             pointTimer = 0;
+            score = 0;
 
             textSpeed.text = "Add Speed XP:" + ((int)(5 * SpeedLevel));
             textHealth.text = "Add Heart XP:" + (((int)PlayerHealth.Instance.Health - 3) * 5);
@@ -90,7 +93,11 @@ namespace Player
             pointTimer += Time.deltaTime;
             if (timeElapsed >= timeLimit)
             {
-                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+                if (PlayerPrefs.GetInt("HighestScore", 0) < score)
+                {
+                    PlayerPrefs.SetInt("HighestScore", score);
+                }
+                SceneManager.LoadScene("GameResults");
             }
 
             // For test use only
@@ -100,6 +107,7 @@ namespace Player
                 xp += 5;
             }
             UpdateXPDisplay();
+            UpdateScoreDisplay();
             UpdateTimerDisplay();
 
             // ------------------ Spawning tick (NEW) ------------------
@@ -117,7 +125,12 @@ namespace Player
         // ------------------ Existing UI helpers ------------------
         private void UpdateXPDisplay()
         {
-            textXP.text = xp.ToString();
+            textXP.text = "XP: " + xp;
+        }
+
+        private void UpdateScoreDisplay()
+        {
+            textScore.text = "Score: " + score;
         }
 
         private void UpdateTimerDisplay()
@@ -227,6 +240,7 @@ namespace Player
         public static void AddXP(int amount)
         {
             xp += amount;
+            score += amount;
         }
 
         // =====================================================================
