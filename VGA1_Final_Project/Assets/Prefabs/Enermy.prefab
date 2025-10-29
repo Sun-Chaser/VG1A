@@ -426,6 +426,7 @@ MonoBehaviour:
   detectionRadius: 10
   stopDistance: 3
   burstDelay: 0.2
+  xpAmount: 50
   trackEnermy: 0
   shootradial: 1
   burstCount: 3
