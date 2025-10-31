@@ -143,6 +143,8 @@ namespace EnermyTest
                 TakeDamage(10);
             }
         }
+        
+        
     }
 }
 
