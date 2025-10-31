@@ -165,4 +165,4 @@ MonoBehaviour:
   radius: 1.5
   angularSpeed: 180
   startAngleDeg: 0
-  lifetime: 5
+  lifetime: 6

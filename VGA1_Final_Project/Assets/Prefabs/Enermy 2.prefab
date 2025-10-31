@@ -464,20 +464,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf2cd940ecc8e04498d6cd59f40aa70b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 100
+  maxHealth: 900
   currentHealth: 0
-  moveSpeed: 2
-  shootInterval: 2
+  moveSpeed: 1
+  shootInterval: 3
   projectilePrefab: {fileID: 7866476202368515216, guid: fec66b2be62f65f44b115c1d85344129,
     type: 3}
-  projectileSpeed: 5
-  radialCount: 0
-  detectionRadius: 6
-  stopDistance: 1
+  projectileSpeed: 3
+  radialCount: 12
+  detectionRadius: 10
+  stopDistance: 2
   burstDelay: 0.2
+  healTickInterval: 0.1
   trackEnermy: 0
   shootradial: 0
-  burstCount: 0
+  burstCount: 1
+  summonPrefab: {fileID: 6647686738918194346, guid: c9a000c9366145f46a3eb2e7dd8ca99d,
+    type: 3}
+  orbitPrefab: {fileID: 7866476202368515216, guid: 35defcd1715f6854c9117dc05ceb5d4b,
+    type: 3}
 --- !u!1 &7262304457572562167
 GameObject:
   m_ObjectHideFlags: 0
