@@ -2,6 +2,7 @@
  *  Author: ariel oliveira [o.arielg@gmail.com]
  */
 
+using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -12,18 +13,7 @@ namespace Player
         public delegate void OnHealthChangedDelegate();
         public OnHealthChangedDelegate onHealthChangedCallback;
 
-        #region Sigleton
-        private static PlayerHealth instance;
-        public static PlayerHealth Instance
-        {
-            get
-            {
-                if (instance == null)
-                    instance = FindObjectOfType<PlayerHealth>();
-                return instance;
-            }
-        }
-        #endregion
+        public static PlayerHealth instance;
 
         [SerializeField]
         private float health;
@@ -35,6 +25,11 @@ namespace Player
         float speed;
         [SerializeField]
         private float maxSpeed;
+
+        public void Awake()
+        {
+            instance = this;
+        }
 
         public float Health { get { return health; } }
         public float MaxHealth { get { return maxHealth; } }
@@ -56,14 +51,11 @@ namespace Player
 
         public void AddHealth()
         {
-            if (maxHealth < maxTotalHealth)
-            {
-                maxHealth += 1;
-                health = maxHealth;
+            maxHealth += 1;
+            health = maxHealth;
 
-                if (onHealthChangedCallback != null)
-                    onHealthChangedCallback.Invoke();
-            }   
+            if (onHealthChangedCallback != null)
+                onHealthChangedCallback.Invoke();
         }
 
         void ClampHealth()
@@ -75,9 +67,9 @@ namespace Player
 
             if (health <= 0f)
             {
-                if (PlayerPrefs.GetInt("HighestScore", 0) < GameController.score)
+                if (PlayerPrefs.GetInt("HighestScore", 0) < GameController.instance.score)
                 {
-                    PlayerPrefs.SetInt("HighestScore", GameController.score);
+                    PlayerPrefs.SetInt("HighestScore", GameController.instance.score);
                 }
                 SceneManager.LoadScene("GameResults");
             }
@@ -85,10 +77,7 @@ namespace Player
 
         public void AddSpeed()
         {
-            if (speed < maxSpeed)
-            {
-                speed += 0.1f;
-            }
+            speed += 0.1f;
         }
     }
 }

@@ -22,7 +22,7 @@ namespace EnermyTest
             Destroy(gameObject);
             if (other.gameObject.tag == "Player")
             {
-                PlayerHealth.Instance.TakeDamage(1.0f);
+                PlayerHealth.instance.TakeDamage(1.0f);
             }
         }
     }

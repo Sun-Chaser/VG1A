@@ -22,6 +22,7 @@ namespace EnermyTest
         public float stopDistance = 1.2f;  // stop moving when this close
         public float burstDelay = 0.2f;    // spacing between shots inside a burst
         private bool isBursting = false;   // prevent overlapping bursts
+        public int xpAmount;
 
         private Transform player;
         private float shootTimer;
@@ -129,6 +130,7 @@ namespace EnermyTest
             if (currentHealth <= 0)
             {
                 healthBar.SetMaxHealth(0);
+                GameController.instance.AddXP(xpAmount);
                 Destroy(gameObject);
             }
             healthBar.SetHealth(currentHealth);
@@ -138,7 +140,6 @@ namespace EnermyTest
         {
             if (other.GetComponentInParent<FireBall>())
             {
-                GameController.AddXP(5);
                 TakeDamage(10);
             }
         }
