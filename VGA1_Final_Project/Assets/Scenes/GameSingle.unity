@@ -53258,7 +53258,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 0.21
+  m_Volume: 0.1
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -53359,6 +53359,7 @@ MonoBehaviour:
   chestOpenClip: {fileID: 8300000, guid: e848ee1b4cad74b6abe41c80735ad529, type: 3}
   healClip: {fileID: 8300000, guid: c743fe8d53e9c4912a63f7acadb99a00, type: 3}
   levelUpClip: {fileID: 8300000, guid: 4668dc1afbf4347d99bb613117bca706, type: 3}
+  mainBGM: {fileID: 8300000, guid: b7a26b502e66342a68219ebf2f9b6f55, type: 3}
 --- !u!4 &1031674323
 Transform:
   m_ObjectHideFlags: 0
@@ -55630,7 +55631,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 470.1, y: 310.2}
+  m_AnchoredPosition: {x: 437.9, y: 310.8}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!95 &1157987765

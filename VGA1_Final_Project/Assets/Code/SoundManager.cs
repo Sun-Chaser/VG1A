@@ -10,15 +10,20 @@ public class SoundManager : MonoBehaviour
     public AudioClip chestOpenClip;
     public AudioClip healClip;
     public AudioClip levelUpClip;
+    public AudioClip mainBGM;
     
     void Awake()
     {
         instance = this;
     }
 
-    void start()
+    void Start()
     {
+        // Play BGM
         audioSource = GetComponent<AudioSource>();
+        audioSource.clip = mainBGM;
+        audioSource.loop = true;
+        audioSource.Play();
     }
     
     void Update()
