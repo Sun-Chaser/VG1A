@@ -44,7 +44,18 @@ namespace Player
         // ---------------- Boss ----------------
         [Header("Boss")]
         public Transform bossSpawnPoint;
+
+        // keep the old single boss as fallback (optional)
         public GameObject bossPrefab;
+
+        // New: allow multiple boss types and how many to spawn
+        public GameObject[] bossPrefabs;   // if empty/null, we’ll use bossPrefab
+        public int bossCount = 3;          // how many bosses to spawn together
+        public float bossSpawnRadius = 2.5f; // spread around the spawn point
+        
+        // Track active bosses
+        private readonly List<GameObject> _activeBosses = new();
+
 
         // ---------------- Spawning ----------------
         [Header("Enemy Spawning")]
@@ -335,6 +346,89 @@ namespace Player
             _activeEnemies.Remove(enemy);
             _prefabIndexByEnemy.Remove(enemy);
         }
+        
+        // Helper: attach to bosses at spawn so we can detect their destruction
+        private class BossHandle : MonoBehaviour
+        {
+            private void OnDestroy()
+            {
+                // When a boss is destroyed (killed or scene unload), notify controller
+                if (GameController.instance != null)
+                    GameController.instance.RegisterBossDeath(gameObject);
+            }
+        }
+
+        // Spawn N bosses around the spawn point in a circle
+        private void SpawnBossWave()
+        {
+            _activeBosses.Clear();
+
+            if (!bossSpawnPoint) return;
+
+            // Use bossPrefabs if provided; otherwise fallback to single bossPrefab
+            bool useArray = bossPrefabs != null && bossPrefabs.Length > 0;
+            int n = Mathf.Max(1, bossCount);
+
+            for (int i = 0; i < n; i++)
+            {
+                Vector2 offset = Vector2.zero;
+                if (n > 1)
+                {
+                    float ang = i * (360f / n) * Mathf.Deg2Rad;
+                    offset = new Vector2(Mathf.Cos(ang), Mathf.Sin(ang)) * bossSpawnRadius;
+                }
+
+                GameObject prefab = useArray
+                    ? bossPrefabs[Random.Range(0, bossPrefabs.Length)]
+                    : bossPrefab;
+
+                if (!prefab) continue;
+
+                Vector3 pos = bossSpawnPoint.position + (Vector3)offset;
+                Quaternion rot = bossSpawnPoint.rotation;
+
+                var boss = Instantiate(prefab, pos, rot);
+                boss.AddComponent<BossHandle>();               // so we learn when it dies
+
+                // Optional: put bosses on a specific sorting layer
+                var sr = boss.GetComponent<SpriteRenderer>();
+                if (sr) sr.sortingLayerName = "L1_chars";
+
+                _activeBosses.Add(boss);
+            }
+        }
+
+        private void CleanBossList()
+        {
+            for (int i = _activeBosses.Count - 1; i >= 0; i--)
+                if (_activeBosses[i] == null) _activeBosses.RemoveAt(i);
+        }
+
+        public void RegisterBossDeath(GameObject bossGO)
+        {
+            // Called by BossHandle.OnDestroy
+            _activeBosses.Remove(bossGO);
+
+            // If all bosses are dead, end immediately
+            if (_bossSequenceStarted && !_resultsQueued)
+            {
+                CleanBossList();
+                if (_activeBosses.Count == 0)
+                    EndResultsAndSaveHighscore();
+            }
+        }
+
+        private void EndResultsAndSaveHighscore()
+        {
+            if (_resultsQueued) return;
+            _resultsQueued = true;
+
+            int best = PlayerPrefs.GetInt("HighestScore", 0);
+            if (score > best) PlayerPrefs.SetInt("HighestScore", score);
+
+            SceneManager.LoadScene("GameResults");
+        }
+
 
         // =====================================================================
         // Boss sequence
@@ -369,8 +463,8 @@ namespace Player
 
             // Clear normal spawns during boss
             // (optional) you can also destroy existing enemies here if desired
-            // foreach (var e in _activeEnemies) if (e) Destroy(e);
-            // _activeEnemies.Clear(); _prefabIndexByEnemy.Clear();
+            foreach (var e in _activeEnemies) if (e) Destroy(e);
+            _activeEnemies.Clear(); _prefabIndexByEnemy.Clear();
 
             // Prepare countdown (10 -> 1)
             const int prepareSeconds = 10;
@@ -383,28 +477,31 @@ namespace Player
                 yield return new WaitForSeconds(1f);
             }
 
-            // Spawn boss
-            if (bossPrefab && bossSpawnPoint)
-                Instantiate(bossPrefab, bossSpawnPoint.position, bossSpawnPoint.rotation);
+            // Spawn multiple bosses
+            SpawnBossWave();
 
             // Boss battle countdown
             float bossLeft = Mathf.Max(0, bossTimeLimit);
             while (bossLeft > 0f)
             {
+                // If all bosses are dead, end right away
+                CleanBossList();
+                if (_activeBosses.Count == 0)
+                {
+                    EndResultsAndSaveHighscore();
+                    yield break;
+                }
+
                 if (textBossPrep)
                     textBossPrep.text = $"Boss Time: {FormatMMSS(bossLeft)}";
+
                 yield return null;
                 bossLeft -= Time.deltaTime;
             }
 
-            // Finish → save high score → results
-            if (!_resultsQueued)
-            {
-                _resultsQueued = true;
-                int best = PlayerPrefs.GetInt("HighestScore", 0);
-                if (score > best) PlayerPrefs.SetInt("HighestScore", score);
-                SceneManager.LoadScene("GameResults");
-            }
+            // Time ran out -> end as well
+            EndResultsAndSaveHighscore();
+
         }
 
         // =====================================================================
@@ -419,3 +516,5 @@ namespace Player
         }
     }
 }
+
+

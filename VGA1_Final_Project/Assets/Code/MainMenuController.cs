@@ -24,6 +24,6 @@ public class MainMenuController : MonoBehaviour
 
     public void PlayOnline()
     {
-        SceneManager.LoadScene("GameOnline");
+        SceneManager.LoadScene("Loading");
     }
 }

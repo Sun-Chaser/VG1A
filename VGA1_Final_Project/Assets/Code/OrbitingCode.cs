@@ -46,7 +46,7 @@ public class OrbitingCode : MonoBehaviour
         Destroy(gameObject);
         if (other.gameObject.tag == "Player")
         {
-            PlayerHealth.Instance.TakeDamage(2.0f);
+            PlayerHealth.instance.TakeDamage(2.0f);
         }
     }
         
