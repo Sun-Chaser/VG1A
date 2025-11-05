@@ -27,7 +27,8 @@ namespace Player
 
         public GameObject fireballPrefab;
         public Transform firePoint;
-        public float fireSpeed = 12f;
+        public int fireNum;
+        public float fireSpeed;
         public float fireCooldown = 0.2f;
         float nextFireTime;
         public Vector2 cachedAimDir = Vector2.right;
@@ -53,7 +54,7 @@ namespace Player
             shiftHeld = Input.GetKey(KeyCode.LeftShift);
             attack = Input.GetMouseButton(0);
 
-            var ph = Player.PlayerHealth.Instance;
+            var ph = Player.PlayerHealth.instance;
           
 
             if (shiftHeld)
@@ -102,18 +103,28 @@ namespace Player
 
             if (Input.GetKeyDown(KeyCode.Escape))
             {
-                MenuController.instance.Show();
+                MenuController.instance.ShowMainMenu();
             }
-        }
 
-        private void FixedUpdate()
-        {
+            if (Input.GetKeyDown(KeyCode.M))
+            {
+                MenuController.instance.ShowShopMenu();
+            }
+            
+            if (Input.GetKeyDown(KeyCode.H))
+            {
+                GameController.instance.Heal();
+            }
+
 
         }
 
         public void ShootEvent()
         {
-            Shoot(cachedAimDir);  // ֱ���û���ķ�����
+            for (int i = 0; i < fireNum; i++)
+            {
+                Shoot(cachedAimDir);
+            }
         }
 
         void Shoot(Vector2 dir)

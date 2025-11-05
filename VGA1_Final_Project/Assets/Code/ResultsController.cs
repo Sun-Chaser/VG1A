@@ -10,13 +10,21 @@ public class ResultsController : MonoBehaviour
     public TMP_Text scoreText;
     public TMP_Text highestScoreText;
     public TMP_Text countdownText; 
-    public float returnDelay = 5f;
+    public float returnDelay = 10f;
+    public AudioSource audioSource;
+    public AudioClip bgm;
 
     private IEnumerator Start()
     {
+        // Play music
+        audioSource = GetComponent<AudioSource>();
+        audioSource.clip = bgm;
+        audioSource.loop = false;
+        audioSource.Play();
+        
         // Show score
         if (scoreText != null)
-            scoreText.text = $"Your Score: {GameController.score}";
+            scoreText.text = $"Your Score: {GameController.instance.score}";
 
         // Show highest score (default 0 if none)
         if (highestScoreText != null)
