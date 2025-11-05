@@ -177,6 +177,7 @@ namespace EnermyTest
                 GameController.instance.AddXP(200);
                 healthBar.SetMaxHealth(0);
                 Destroy(gameObject);
+                GameController.instance.AddXP(100);
             }
             healthBar.SetHealth(currentHealth);
         }
@@ -185,7 +186,7 @@ namespace EnermyTest
         {
             if (other.GetComponentInParent<FireBall>())
             {
-                TakeDamage(50);
+                TakeDamage(10);
             }
         }
 

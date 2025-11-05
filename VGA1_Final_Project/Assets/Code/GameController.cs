@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -21,8 +22,18 @@ namespace Player
         [Header("Hearts UI")]
         public Transform heartsParent;
         public GameObject heartContainerPrefab;
+        
+        [Header("Hints")]
+        public TMP_Text textHint;              // assign in Inspector
+        [SerializeField] float hintInterval = 20f;   // check every 20s
+        [SerializeField] float hintDuration = 5f;    // show for 5s
+        private int _fallbackHintIndex = 0;          // rotate F / Shift
+        private Coroutine _hintLoopCo;
 
         // ---------------- Player/Score/Timer ----------------
+        [Header("Player Spawn")]
+        public Transform[] playerSpawnPoints; // assign in Inspector
+        
         [Header("Game State")]
         public int xp;
         public int score;
@@ -55,7 +66,6 @@ namespace Player
         
         // Track active bosses
         private readonly List<GameObject> _activeBosses = new();
-
 
         // ---------------- Spawning ----------------
         [Header("Enemy Spawning")]
@@ -114,8 +124,98 @@ namespace Player
             // Spawner
             _spawnCheckTimer = spawnCheckInterval;
             PrimeEnemiesToMinimum();
+            
+            // Player Spawner
+            SpawnPlayerAtRandomPoint();
+            
+            // Hint System
+            if (textHint) textHint.gameObject.SetActive(false);
+            _hintLoopCo = StartCoroutine(HintLoop());
         }
 
+        private void SpawnPlayerAtRandomPoint()
+        {
+            if (playerSpawnPoints == null || playerSpawnPoints.Length == 0) return;
+
+            // Find player
+            var playerGO = PlayerMovement.instance ? PlayerMovement.instance.gameObject
+                : GameObject.FindWithTag("Player");
+            if (!playerGO) return;
+
+            // Pick a random valid point
+            Transform chosen = playerSpawnPoints[Random.Range(0, playerSpawnPoints.Length)];
+
+            // Teleport (2D-friendly)
+            var rb2d = playerGO.GetComponent<Rigidbody2D>();
+            if (rb2d)
+            {
+                rb2d.velocity = Vector2.zero;
+                rb2d.angularVelocity = 0f;
+                rb2d.position = (Vector2)chosen.position;
+                rb2d.rotation = chosen.eulerAngles.z;
+            }
+            else
+            {
+                playerGO.transform.SetPositionAndRotation(chosen.position, chosen.rotation);
+            }
+
+            // Ensure desired sorting layer
+            var sr = playerGO.GetComponent<SpriteRenderer>();
+            if (sr) sr.sortingLayerName = chosen.GetComponent<SpriteRenderer>().sortingLayerName;
+        }
+
+        private IEnumerator HintLoop()
+        {
+            // small initial delay to avoid overlapping with early UI updates (optional)
+            yield return new WaitForSeconds(1f);
+
+            while (true)
+            {
+                // Wait until it's time to check
+                yield return new WaitForSeconds(hintInterval);
+                
+                if (_bossSequenceStarted) continue; // inside the while loop, right after the 20s wait
+
+
+                // Pick the best hint for the current state
+                string msg = ChooseHintMessage();
+
+                // Show it for hintDuration seconds
+                if (!string.IsNullOrEmpty(msg) && textHint != null)
+                {
+                    textHint.text = msg;
+                    textHint.gameObject.SetActive(true);
+                    yield return new WaitForSeconds(hintDuration);
+                    textHint.gameObject.SetActive(false);
+                }
+            }
+        }
+
+        private string ChooseHintMessage()
+        {
+            // 1) Health not full?
+            if (PlayerHealth.instance != null &&
+                PlayerHealth.instance.Health < PlayerHealth.instance.MaxHealth)
+            {
+                return "Remember H is for Heal";
+            }
+
+            // 2) Enough XP to upgrade?
+            if (xp > 50)
+            {
+                return "Remember press M to shop and level up";
+            }
+
+            // 3) Rotate fallback hints
+            string[] fallbacks = {
+                "Press F to open chest",
+                "Hold Shift to speed up"
+            };
+            string pick = fallbacks[_fallbackHintIndex % fallbacks.Length];
+            _fallbackHintIndex++;
+            return pick;
+        }
+        
         private void Update()
         {
             // -------- Normal phase timing --------
