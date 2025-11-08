@@ -267,7 +267,7 @@ GameObject:
   - component: {fileID: 3121606533923876429}
   - component: {fileID: -7983704919184528195}
   m_Layer: 9
-  m_Name: Enermy 1
+  m_Name: Slam1
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
