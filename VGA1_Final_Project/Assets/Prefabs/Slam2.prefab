@@ -36,7 +36,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0.7}
+  m_AnchoredPosition: {x: 0, y: 0.6}
   m_SizeDelta: {x: 100, y: 10}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &4665708075113629452
@@ -267,7 +267,7 @@ GameObject:
   - component: {fileID: 3121606533923876429}
   - component: {fileID: -7983704919184528195}
   m_Layer: 9
-  m_Name: Enermy
+  m_Name: Slam2
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -330,7 +330,7 @@ SpriteRenderer:
   m_SortingLayerID: -921336025
   m_SortingLayer: 8
   m_SortingOrder: 999
-  m_Sprite: {fileID: 21300074, guid: 872dba149c5addb49ac3649c5b9247d6, type: 3}
+  m_Sprite: {fileID: 21300038, guid: 872dba149c5addb49ac3649c5b9247d6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -415,9 +415,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7cc8cc6969be1424d8e1f4a82ab3ad59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 100
+  maxHealth: 40
   currentHealth: 0
-  moveSpeed: 1
+  moveSpeed: 0.5
   shootInterval: 3
   projectilePrefab: {fileID: 7866476202368515216, guid: fec66b2be62f65f44b115c1d85344129,
     type: 3}
@@ -426,9 +426,9 @@ MonoBehaviour:
   detectionRadius: 10
   stopDistance: 3
   burstDelay: 0.2
-  xpAmount: 20
-  trackEnermy: 0
-  shootradial: 1
+  xpAmount: 10
+  trackEnermy: 1
+  shootradial: 0
   burstCount: 3
 --- !u!95 &-7983704919184528195
 Animator:
@@ -440,7 +440,7 @@ Animator:
   m_GameObject: {fileID: 6647686738918194346}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: fc0db69afa5cfda44a8512dd0e12062e, type: 2}
+  m_Controller: {fileID: 9100000, guid: 776b131a7775e114395d70f89214e8eb, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
