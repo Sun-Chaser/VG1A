@@ -296,7 +296,7 @@ GameObject:
   - component: {fileID: 4219479761688629055}
   m_Layer: 9
   m_Name: Enermy 2
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -464,7 +464,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf2cd940ecc8e04498d6cd59f40aa70b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 900
+  maxHealth: 2000
   currentHealth: 0
   moveSpeed: 1
   shootInterval: 3
