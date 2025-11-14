@@ -38898,15 +38898,15 @@ MonoBehaviour:
   - {fileID: 622724600}
   - {fileID: 1672987976}
   enemyPrefabs:
-  - {fileID: 6647686738918194346, guid: 0d4d6191df510284b8e22dadae933a23, type: 3}
-  - {fileID: 6647686738918194346, guid: 6e6ddf08245f96d40ad36a3e9ca74f02, type: 3}
   - {fileID: 6647686738918194346, guid: c9a000c9366145f46a3eb2e7dd8ca99d, type: 3}
+  - {fileID: 6647686738918194346, guid: 0d4d6191df510284b8e22dadae933a23, type: 3}
   - {fileID: 6647686738918194346, guid: 1017dcce752d05e4c9d0783919940f32, type: 3}
+  - {fileID: 6647686738918194346, guid: 6e6ddf08245f96d40ad36a3e9ca74f02, type: 3}
   maxEnemies: 100
   minEnemies: 80
   cappedGroupStart: 0
   cappedGroupEndInclusive: 1
-  cappedGroupMax: 20
+  cappedGroupMax: 100
   spawnCheckInterval: 1.5
 --- !u!4 &654263927
 Transform:
