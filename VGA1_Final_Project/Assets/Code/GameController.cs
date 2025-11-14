@@ -51,6 +51,13 @@ namespace Player
         public int MaxSpeedLevel = 10;
         public int MaxFireballLevel = 10;
         public int MaxFireballSpeedLevel = 10;
+        
+        [Header("Leveling (XP -> Level -> Points)")]
+        public int level = 1;
+        public int upgradePoints = 0;
+        public int xpLinearA = 10;
+        public int xpLinearB = 20;
+        private int _xpForNext;
 
         // ---------------- Boss ----------------
         [Header("Boss")]
@@ -87,8 +94,7 @@ namespace Player
         public int cappedGroupEndInclusive = 1;
         [Tooltip("Max count allowed for certain enemyPrefabs")]
         public int cappedGroupMax = 20;
-
-
+        
         [Tooltip("How often (seconds) to check and possibly spawn")]
         public float spawnCheckInterval = 1.5f;
 
@@ -136,6 +142,9 @@ namespace Player
             // Hint System
             if (textHint) textHint.gameObject.SetActive(false);
             _hintLoopCo = StartCoroutine(HintLoop());
+            
+            // Level calculation
+            _xpForNext = CalcXpForNext(level);
         }
 
         private void SpawnPlayerAtRandomPoint()
@@ -263,7 +272,8 @@ namespace Player
         // =====================================================================
         private void UpdateXPDisplay()
         {
-            if (textXP) textXP.text = xp.ToString();
+            if (!textXP) return;
+            textXP.text = $"{xp}/{_xpForNext}";
         }
 
         private void UpdateScoreDisplay()
@@ -332,9 +342,49 @@ namespace Player
 
         public void AddXP(int amount)
         {
-            SoundManager.instance?.PlayLevelUpClip();
+            // XP for level up
             xp += amount;
+            bool leveled = false;
+
+            // Safe calculation
+            while (xp >= _xpForNext)
+            {
+                xp -= _xpForNext;         // Deduct current point
+                level += 1;               // Level up
+                upgradePoints += 1;       // Get upgrade point
+                _xpForNext = CalcXpForNext(level);
+                leveled = true;
+            }
+
+            if (leveled)
+            {
+                SoundManager.instance.PlayLevelUpClip();
+                MenuController.instance?.UpdateUpgradePointsDisplay();
+            }
+
+            // ADd to score
             score += amount;
+
+            // Update XP/Score UI
+            UpdateXPDisplay();
+            UpdateScoreDisplay();
+        }
+
+        private int CalcXpForNext(int currentLevel)
+        {
+            // EXP_next = a * Level + b
+            return Mathf.Max(1, xpLinearA * currentLevel + xpLinearB);
+        }
+
+        /// <summary>Try to consume 1 point to upgrade</summary>
+        public bool TrySpendUpgradePoint()
+        {
+            if (upgradePoints > 0)
+            {
+                upgradePoints--;
+                return true;
+            }
+            return false;
         }
 
         // =====================================================================
