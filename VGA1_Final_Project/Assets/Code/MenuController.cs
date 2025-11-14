@@ -3,6 +3,7 @@ using Player;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class MenuController : MonoBehaviour
 {
@@ -19,15 +20,15 @@ public class MenuController : MonoBehaviour
     public GameObject upFireballSpeed;
 
     [Header("Max Badge Prefab")]
-    public GameObject maxLevelPre; // prefab shown when maxed
+    public GameObject maxLevelPre;
 
     [Header("Texts")]
     public TMP_Text textHealth;
     public TMP_Text textSpeed;
     public TMP_Text textFireBallNum;
     public TMP_Text textFireBallSpeed;
+    public TMP_Text textPoints;
 
-    // track spawned "MAX LEVEL" badges so we can avoid duplicates / clean up
     private readonly Dictionary<GameObject, GameObject> _maxBadgeByButton = new();
 
     void Awake()
@@ -38,12 +39,9 @@ public class MenuController : MonoBehaviour
 
     public void Start()
     {
-        // initial costs
-        textHealth.text        = "Cost: " + GameController.instance.HealthLevel        * 5;
-        textSpeed.text         = "Cost: " + GameController.instance.SpeedLevel         * 5;
-        textFireBallNum.text   = "Cost: " + GameController.instance.FireballLevel      * 5;
-        textFireBallSpeed.text = "Cost: " + GameController.instance.FireballSpeedLevel * 5;
-
+        // New system: shop costs are points, not XP
+        RefreshShopUI();
+        UpdateUpgradePointsDisplay();
         CheckAllMaxStates();
         HideMenu();
     }
@@ -54,7 +52,10 @@ public class MenuController : MonoBehaviour
         mainMenu.SetActive(false);
         shopMenu.SetActive(false);
         menu.SetActive(true);
+
+        RefreshShopUI();
         CheckAllMaxStates(); // ensure UI state is fresh when switching
+        UpdateUpgradePointsDisplay();
     }
 
     public void ShowMainMenu()
@@ -67,6 +68,7 @@ public class MenuController : MonoBehaviour
     public void ShowShopMenu()
     {
         SwitchMenu(shopMenu);
+        UpdateUpgradePointsDisplay(); 
         Time.timeScale = 0;
         if (PlayerMovement.instance != null) PlayerMovement.instance.isPaused = true;
     }
@@ -84,72 +86,109 @@ public class MenuController : MonoBehaviour
         HideMenu();
         Time.timeScale = 1;
     }
+
     public void Restart() => SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     public void Quit()    => SceneManager.LoadScene("MainMenu");
 
-    // ---------- Upgrades ----------
+    // ---------- Upgrades (spend 1 point each) ----------
     public void AddHeart()
     {
-        int cost = GameController.instance.HealthLevel * 5;
         if (GameController.instance.HealthLevel < GameController.instance.MaxHealthLevel
-            && GameController.instance.xp >= cost)
+            && GameController.instance.TrySpendUpgradePoint())
         {
             PlayerHealth.instance.AddHealth();
-            GameController.instance.xp -= cost;
             GameController.instance.HealthLevel++;
 
-            SoundManager.instance.PlayLevelUpClip();
-            textHealth.text = "Cost: " + GameController.instance.HealthLevel * 5;
+            SoundManager.instance?.PlayLevelUpClip();
+            textHealth.text = "Cost: " + GameController.instance.HealthLevel + " point";
             CheckAllMaxStates();
+            UpdateUpgradePointsDisplay();
+            UpdateButtonsInteractable();
         }
     }
 
     public void AddSpeed()
     {
-        int cost = 5 * GameController.instance.SpeedLevel;
         if (GameController.instance.SpeedLevel < GameController.instance.MaxSpeedLevel
-            && GameController.instance.xp >= cost)
+            && GameController.instance.TrySpendUpgradePoint())
         {
             PlayerHealth.instance.AddSpeed();
-            GameController.instance.xp -= cost;
             GameController.instance.SpeedLevel++;
-            
-            SoundManager.instance.PlayLevelUpClip();
-            textSpeed.text = "Cost: " + 5 * GameController.instance.SpeedLevel;
+
+            SoundManager.instance?.PlayLevelUpClip();
+            textSpeed.text = "Cost: " + GameController.instance.SpeedLevel + " point";
             CheckAllMaxStates();
+            UpdateButtonsInteractable();
         }
     }
 
     public void AddFireBall()
     {
-        int cost = 5 * GameController.instance.FireballLevel;
         if (GameController.instance.FireballLevel < GameController.instance.MaxFireballLevel
-            && GameController.instance.xp >= cost)
+            && GameController.instance.TrySpendUpgradePoint())
         {
             PlayerMovement.instance.fireNum += 1;
-            GameController.instance.xp -= cost;
             GameController.instance.FireballLevel++;
 
-            SoundManager.instance.PlayLevelUpClip();
-            textFireBallNum.text = "Cost: " + 5 * GameController.instance.FireballLevel;
+            SoundManager.instance?.PlayLevelUpClip();
+            textFireBallNum.text = "Cost: " + GameController.instance.FireballLevel + " point";
             CheckAllMaxStates();
+            UpdateUpgradePointsDisplay();
+            UpdateButtonsInteractable();
         }
     }
 
     public void AddFireBallSpeed()
     {
-        int cost = 5 * GameController.instance.FireballSpeedLevel;
         if (GameController.instance.FireballSpeedLevel < GameController.instance.MaxFireballSpeedLevel
-            && GameController.instance.xp >= cost)
+            && GameController.instance.TrySpendUpgradePoint())
         {
             PlayerMovement.instance.fireSpeed += 1.0f;
-            GameController.instance.xp -= cost;
             GameController.instance.FireballSpeedLevel++;
 
-            SoundManager.instance.PlayLevelUpClip();
-            textFireBallSpeed.text = "Cost: " + 5 * GameController.instance.FireballSpeedLevel;
+            SoundManager.instance?.PlayLevelUpClip();
+            textFireBallSpeed.text = "Cost:  " + GameController.instance.FireballSpeedLevel +" point";
             CheckAllMaxStates();
+            UpdateUpgradePointsDisplay();
+            UpdateButtonsInteractable();
         }
+    }
+
+    // ---------- Helpers ----------
+    private void RefreshShopUI()
+    {
+        // Default to point-based cost; MAX state will overwrite via CheckAllMaxStates()
+        if (textHealth)        textHealth.text        = "Cost: 1 point";
+        if (textSpeed)         textSpeed.text         = "Cost: 1 point";
+        if (textFireBallNum)   textFireBallNum.text   = "Cost: 1 point";
+        if (textFireBallSpeed) textFireBallSpeed.text = "Cost: 1 point";
+
+        UpdateButtonsInteractable();
+    }
+
+    // Optional quality-of-life: disable buttons if no points left (requires Button component on those GameObjects)
+    private void UpdateButtonsInteractable()
+    {
+        int points = GameController.instance != null ? GameController.instance.upgradePoints : 0;
+        bool hasPoint = points > 0;
+
+        SetButtonInteractable(upHealth,        hasPoint);
+        SetButtonInteractable(upSpeed,         hasPoint);
+        SetButtonInteractable(upFireball,      hasPoint);
+        SetButtonInteractable(upFireballSpeed, hasPoint);
+    }
+
+    private void SetButtonInteractable(GameObject go, bool interactable)
+    {
+        if (!go) return;
+        var btn = go.GetComponent<Button>();
+        if (btn) btn.interactable = interactable;
+    }
+    
+    public void UpdateUpgradePointsDisplay()
+    {
+        if (textPoints && GameController.instance)
+            textPoints.text = $"Upgrade Points: {GameController.instance.upgradePoints}";
     }
 
     // ---------- Max-level checks & swapping ----------
@@ -190,14 +229,12 @@ public class MenuController : MonoBehaviour
         {
             if (label != null) label.text = "MAX LEVEL";
 
-            // already swapped? then just ensure button hidden
             if (_maxBadgeByButton.ContainsKey(upgradeButton))
             {
                 upgradeButton.SetActive(false);
                 return;
             }
 
-            // instantiate max badge at the same rect as the button
             if (maxLevelPre != null)
             {
                 RectTransform btnRect = upgradeButton.GetComponent<RectTransform>();
@@ -208,9 +245,9 @@ public class MenuController : MonoBehaviour
 
                 if (btnRect != null && instRT != null)
                 {
-                    instRT.anchorMin = btnRect.anchorMin;
-                    instRT.anchorMax = btnRect.anchorMax;
-                    instRT.pivot     = btnRect.pivot;
+                    instRT.anchorMin        = btnRect.anchorMin;
+                    instRT.anchorMax        = btnRect.anchorMax;
+                    instRT.pivot            = btnRect.pivot;
                     instRT.anchoredPosition = btnRect.anchoredPosition;
                     instRT.sizeDelta        = btnRect.sizeDelta;
                     instRT.localScale       = btnRect.localScale;
@@ -223,11 +260,9 @@ public class MenuController : MonoBehaviour
         }
         else
         {
-            // not max: restore button (if we had swapped earlier)
             if (_maxBadgeByButton.TryGetValue(upgradeButton, out var badge) && badge != null)
-            {
                 Destroy(badge);
-            }
+
             _maxBadgeByButton.Remove(upgradeButton);
             upgradeButton.SetActive(true);
         }
