@@ -93,7 +93,7 @@ namespace Player
 
         [Tooltip("Minimum enemies to try to keep in scene (normal phase)")]
         public int minEnemies = 15;
-
+        
         [Tooltip("Capped prefab index start")]
         public int cappedGroupStart = 0;
         [Tooltip("Capped prefab index end")]
@@ -466,12 +466,61 @@ namespace Player
             // Available pool for enemy
             var eligible = BuildEligiblePrefabIndices();
             if (eligible.Count == 0) return -1;
-
+            
+            /*
             // Random spawn
             int pick = eligible[Random.Range(0, eligible.Count)];
             return pick;
-        }
+            */
+            
+            // How far into the normal phase we are: 0 (start) -> 1 (timeLimit)
+            float progress = 0f;
+            if (timeLimit > 0f)
+                progress = timeElapsed / timeLimit;
 
+            // Use weighted selection based on time progress & prefab index
+            return WeightedPickByDifficulty(eligible, progress);
+        }
+        
+        private int WeightedPickByDifficulty(List<int> eligible, float progress)
+        {
+            if (eligible == null || eligible.Count == 0)
+                return -1;
+    
+            if (eligible.Count == 1)
+                return eligible[0];
+            
+            float[] earlyWeights = { 85f, 10f, 3f, 2f };
+            float[] lateWeights = { 20f, 25f, 25f, 30f };
+    
+            float[] weights = new float[eligible.Count];
+            float totalWeight = 0f;
+    
+            for (int i = 0; i < eligible.Count; i++)
+            {
+                int prefabIndex = eligible[i];
+                int tier = Mathf.Min(prefabIndex, earlyWeights.Length - 1);
+                float weight = Mathf.Lerp(earlyWeights[tier], lateWeights[tier], progress);
+                weights[i] = weight;
+                totalWeight += weight;
+                
+            }
+    
+            float randomValue = UnityEngine.Random.Range(0f, totalWeight);
+    
+            float cumulative = 0f;
+            for (int i = 0; i < eligible.Count; i++)
+            {
+                cumulative += weights[i];
+                if (randomValue <= cumulative)
+                {
+                    return eligible[i];
+                }
+            }
+    
+            return eligible[eligible.Count - 1];
+        }
+        
 
         private int CountPrefabIndex(int prefabIndex)
         {
