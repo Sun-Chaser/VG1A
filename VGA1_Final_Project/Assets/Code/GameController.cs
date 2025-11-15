@@ -51,6 +51,13 @@ namespace Player
         public int MaxSpeedLevel = 10;
         public int MaxFireballLevel = 10;
         public int MaxFireballSpeedLevel = 10;
+        
+        [Header("Leveling (XP -> Level -> Points)")]
+        public int level = 1;
+        public int upgradePoints = 0;
+        public int xpLinearA = 10;
+        public int xpLinearB = 20;
+        private int _xpForNext;
 
         // ---------------- Boss ----------------
         [Header("Boss")]
@@ -81,9 +88,13 @@ namespace Player
         [Tooltip("Minimum enemies to try to keep in scene (normal phase)")]
         public int minEnemies = 15;
 
-        [Tooltip("Max count allowed for enemyPrefabs[0]")]
-        public int maxPrefab0 = 5;
-
+        [Tooltip("Capped prefab index start")]
+        public int cappedGroupStart = 0;
+        [Tooltip("Capped prefab index end")]
+        public int cappedGroupEndInclusive = 1;
+        [Tooltip("Max count allowed for certain enemyPrefabs")]
+        public int cappedGroupMax = 20;
+        
         [Tooltip("How often (seconds) to check and possibly spawn")]
         public float spawnCheckInterval = 1.5f;
 
@@ -131,6 +142,9 @@ namespace Player
             // Hint System
             if (textHint) textHint.gameObject.SetActive(false);
             _hintLoopCo = StartCoroutine(HintLoop());
+            
+            // Level calculation
+            _xpForNext = CalcXpForNext(level);
         }
 
         private void SpawnPlayerAtRandomPoint()
@@ -258,7 +272,8 @@ namespace Player
         // =====================================================================
         private void UpdateXPDisplay()
         {
-            if (textXP) textXP.text = xp.ToString();
+            if (!textXP) return;
+            textXP.text = $"{xp}/{_xpForNext}";
         }
 
         private void UpdateScoreDisplay()
@@ -327,9 +342,49 @@ namespace Player
 
         public void AddXP(int amount)
         {
-            SoundManager.instance?.PlayLevelUpClip();
+            // XP for level up
             xp += amount;
+            bool leveled = false;
+
+            // Safe calculation
+            while (xp >= _xpForNext)
+            {
+                xp -= _xpForNext;         // Deduct current point
+                level += 1;               // Level up
+                upgradePoints += 1;       // Get upgrade point
+                _xpForNext = CalcXpForNext(level);
+                leveled = true;
+            }
+
+            if (leveled)
+            {
+                SoundManager.instance.PlayLevelUpClip();
+                MenuController.instance?.UpdateUpgradePointsDisplay();
+            }
+
+            // ADd to score
             score += amount;
+
+            // Update XP/Score UI
+            UpdateXPDisplay();
+            UpdateScoreDisplay();
+        }
+
+        private int CalcXpForNext(int currentLevel)
+        {
+            // EXP_next = a * Level + b
+            return Mathf.Max(1, xpLinearA * currentLevel + xpLinearB);
+        }
+
+        /// <summary>Try to consume 1 point to upgrade</summary>
+        public bool TrySpendUpgradePoint()
+        {
+            if (upgradePoints > 0)
+            {
+                upgradePoints--;
+                return true;
+            }
+            return false;
         }
 
         // =====================================================================
@@ -395,17 +450,18 @@ namespace Player
         {
             CleanEnemyLists();
 
+            // maxEnemies=> Not spawn
             if (_activeEnemies.Count >= maxEnemies) return -1;
 
-            int prefab0Count = CountPrefabIndex(0);
-            bool can0 = prefab0Count < maxPrefab0;
-            bool can1 = true; // uncapped besides total
+            // Available pool for enemy
+            var eligible = BuildEligiblePrefabIndices();
+            if (eligible.Count == 0) return -1;
 
-            if (can0 && can1)      return (Random.value < 0.5f) ? 0 : 1;
-            else if (can0)         return 0;
-            else if (can1)         return 1;
-            else                   return -1;
+            // Random spawn
+            int pick = eligible[Random.Range(0, eligible.Count)];
+            return pick;
         }
+
 
         private int CountPrefabIndex(int prefabIndex)
         {
@@ -446,6 +502,39 @@ namespace Player
             _activeEnemies.Remove(enemy);
             _prefabIndexByEnemy.Remove(enemy);
         }
+        
+        private int CountCappedGroupAlive()
+        {
+            int cnt = 0;
+            foreach (var kv in _prefabIndexByEnemy)
+            {
+                if (kv.Key == null) continue;
+                int idx = kv.Value;
+                if (idx >= cappedGroupStart && idx <= cappedGroupEndInclusive)
+                    cnt++;
+            }
+            return cnt;
+        }
+        
+        private List<int> BuildEligiblePrefabIndices()
+        {
+            var list = new List<int>();
+            if (enemyPrefabs == null) return list;
+
+            bool groupFull = CountCappedGroupAlive() >= cappedGroupMax;
+
+            for (int i = 0; i < enemyPrefabs.Length; i++)
+            {
+                if (enemyPrefabs[i] == null) continue;
+                
+                if (groupFull && i >= cappedGroupStart && i <= cappedGroupEndInclusive)
+                    continue;
+                
+                list.Add(i);
+            }
+            return list;
+        }
+
         
         // Helper: attach to bosses at spawn so we can detect their destruction
         private class BossHandle : MonoBehaviour
