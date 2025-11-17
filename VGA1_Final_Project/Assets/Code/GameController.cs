@@ -752,6 +752,35 @@ namespace Player
             int r = s % 60;
             return r < 10 ? $"{m}:0{r}" : $"{m}:{r}";
         }
+
+        // =====================================================================
+        // // Boss sequence
+        // // =====================================================================
+        public void ApplyTempSpeed(float multiplier, float duration)
+        {
+            StartCoroutine(TempSpeedCoroutine(multiplier, duration));
+        }
+
+        private IEnumerator TempSpeedCoroutine(float multiplier, float duration)
+        {
+
+            float originalWalkSpeed = PlayerMovement.instance.walkSpeed;
+            float originalSpeed = PlayerMovement.instance.Speed;
+            PlayerMovement.instance.walkSpeed = multiplier * originalWalkSpeed;
+            PlayerMovement.instance.Speed = multiplier * originalSpeed;
+
+            float t = 0f;
+            while (t < duration)
+            {
+                t += Time.deltaTime;
+                yield return null;
+            }
+
+            // restore
+            // If multiple boosts can overlap, you may want a stacking system.
+            PlayerMovement.instance.Speed = originalSpeed;
+            PlayerMovement.instance.walkSpeed = originalWalkSpeed;
+        }
     }
 }
 
