@@ -36,7 +36,7 @@ namespace Player
         public float MaxTotalHealth { get { return maxTotalHealth; } }
         public float Speed { get { return speed; } }
         public float MaxSpeed { get { return maxSpeed; } }
-
+        
         public void Heal(float health)
         {
             this.health += health;
