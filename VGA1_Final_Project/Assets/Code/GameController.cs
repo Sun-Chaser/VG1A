@@ -558,8 +558,20 @@ namespace Player
         public void RegisterEnemyDeath(GameObject enemy)
         {
             if (!enemy) return;
+            RegisterEnemyDeath(enemy, enemy.transform.position);
+        }
+        
+        public void RegisterEnemyDeath(GameObject enemy, Vector3 deathPos)
+        {
+            if (!enemy) return;
+
+            // Remove from tracking
             _activeEnemies.Remove(enemy);
             _prefabIndexByEnemy.Remove(enemy);
+
+            // Try chest drop if the enemy has a dropper
+            var dropper = enemy.GetComponent<EnemyLootDropper>();
+            if (dropper) dropper.TryDrop(deathPos);
         }
         
         private int CountCappedGroupAlive()

@@ -282,7 +282,9 @@ MonoBehaviour:
   destroyDelay: 0.5
   items:
   - {fileID: 6208464724332982844, guid: 21464589668074cc3b6b6e7a76f87226, type: 3}
-  includeDirectXP: 0
+  - {fileID: 6639500528853425261, guid: 9d0ef7796f3a440c197a4d68581636e5, type: 3}
+  - {fileID: 4922592990863922379, guid: 1fb84d6ee822c4dcd95e71424821a00b, type: 3}
+  includeDirectXP: 1
   directXpRange: {x: 10, y: 25}
   spawnOffset: {x: 0, y: 0.2}
 --- !u!1 &2055102312182832482
