@@ -58,6 +58,14 @@ namespace Player
                 onHealthChangedCallback.Invoke();
         }
 
+        public void SetHealth(float newHealth)
+        {
+            health = newHealth;
+            
+            if (onHealthChangedCallback != null)
+                onHealthChangedCallback.Invoke();
+        }
+
         void ClampHealth()
         {
             health = Mathf.Clamp(health, 0, maxHealth);
