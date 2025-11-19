@@ -9,8 +9,8 @@ namespace Player
     public class PlayerMovement : MonoBehaviour
     {
         public static PlayerMovement instance;
-        float walkSpeed = 2.0f;
-        float Speed;
+        public float walkSpeed = 2.0f;
+        public float Speed;
         bool attack;
 
         private Rigidbody2D rb;

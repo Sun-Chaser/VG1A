@@ -36,7 +36,7 @@ namespace Player
         public float MaxTotalHealth { get { return maxTotalHealth; } }
         public float Speed { get { return speed; } }
         public float MaxSpeed { get { return maxSpeed; } }
-
+        
         public void Heal(float health)
         {
             this.health += health;
@@ -54,6 +54,14 @@ namespace Player
             maxHealth += 1;
             health = maxHealth;
 
+            if (onHealthChangedCallback != null)
+                onHealthChangedCallback.Invoke();
+        }
+
+        public void SetHealth(float newHealth)
+        {
+            health = newHealth;
+            
             if (onHealthChangedCallback != null)
                 onHealthChangedCallback.Invoke();
         }

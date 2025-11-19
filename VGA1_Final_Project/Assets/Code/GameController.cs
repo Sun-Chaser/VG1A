@@ -548,8 +548,20 @@ namespace Player
         public void RegisterEnemyDeath(GameObject enemy)
         {
             if (!enemy) return;
+            RegisterEnemyDeath(enemy, enemy.transform.position);
+        }
+        
+        public void RegisterEnemyDeath(GameObject enemy, Vector3 deathPos)
+        {
+            if (!enemy) return;
+
+            // Remove from tracking
             _activeEnemies.Remove(enemy);
             _prefabIndexByEnemy.Remove(enemy);
+
+            // Try chest drop if the enemy has a dropper
+            var dropper = enemy.GetComponent<EnemyLootDropper>();
+            if (dropper) dropper.TryDrop(deathPos);
         }
         
         private int CountCappedGroupAlive()
@@ -751,6 +763,35 @@ namespace Player
             int m = s / 60;
             int r = s % 60;
             return r < 10 ? $"{m}:0{r}" : $"{m}:{r}";
+        }
+
+        // =====================================================================
+        // // Boss sequence
+        // // =====================================================================
+        public void ApplyTempSpeed(float multiplier, float duration)
+        {
+            StartCoroutine(TempSpeedCoroutine(multiplier, duration));
+        }
+
+        private IEnumerator TempSpeedCoroutine(float multiplier, float duration)
+        {
+
+            float originalWalkSpeed = PlayerMovement.instance.walkSpeed;
+            float originalSpeed = PlayerMovement.instance.Speed;
+            PlayerMovement.instance.walkSpeed = multiplier * originalWalkSpeed;
+            PlayerMovement.instance.Speed = multiplier * originalSpeed;
+
+            float t = 0f;
+            while (t < duration)
+            {
+                t += Time.deltaTime;
+                yield return null;
+            }
+
+            // restore
+            // If multiple boosts can overlap, you may want a stacking system.
+            PlayerMovement.instance.Speed = originalSpeed;
+            PlayerMovement.instance.walkSpeed = originalWalkSpeed;
         }
     }
 }
