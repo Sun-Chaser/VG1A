@@ -451,7 +451,10 @@ namespace Player
                 if (index < 0) break;
 
                 Transform sp = spawnPoints[Random.Range(0, spawnPoints.Length)];
-                var inst = Instantiate(enemyPrefabs[index], sp.position, sp.rotation);
+                
+                Vector2 offset2D = Random.insideUnitCircle * 1.5f;
+                Vector3 spawnPos = sp.position + new Vector3(offset2D.x, offset2D.y, 0f);
+                var inst = Instantiate(enemyPrefabs[index], spawnPos, sp.rotation);
 
                 // adopt spawnpoint's sorting layer if present
                 var spSR = sp.GetComponent<SpriteRenderer>();
@@ -497,7 +500,7 @@ namespace Player
             if (eligible.Count == 1)
                 return eligible[0];
             
-            float[] earlyWeights = { 85f, 10f, 3f, 2f };
+            float[] earlyWeights = { 85f, 5f, 0f, 0f };
             float[] lateWeights = { 20f, 25f, 25f, 30f };
     
             float[] weights = new float[eligible.Count];

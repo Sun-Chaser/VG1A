@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 476960262388821062}
   - component: {fileID: 664905443483429112}
   - component: {fileID: 5612355118016120672}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: TemporalSpeedUp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
