@@ -9,7 +9,6 @@ namespace Player
     public class PlayerMovement : MonoBehaviour
     {
         public static PlayerMovement instance;
-        public float walkSpeed = 2.0f;
         public float Speed;
         bool attack;
 
@@ -29,7 +28,7 @@ namespace Player
 
         public GameObject fireballPrefab;
         public Transform firePoint;
-        public int fireNum;
+        public int fireDamage;
         public float fireSpeed;
         public float fireCooldown = 0.2f;
         float nextFireTime;
@@ -63,11 +62,11 @@ namespace Player
 
             if (shiftHeld)
             {
-                Speed = walkSpeed * 1.5f * (1+ ph.Speed);
+                Speed = ph.WalkSpeed * 1.5f * (1+ ph.Speed);
             }
             else
             {
-                Speed = walkSpeed * (1 + ph.Speed);
+                Speed = ph.WalkSpeed * (1 + ph.Speed);
             }
 
 
@@ -125,10 +124,7 @@ namespace Player
 
         public void ShootEvent()
         {
-            for (int i = 0; i < fireNum; i++)
-            {
-                Shoot(cachedAimDir);
-            }
+            Shoot(cachedAimDir);
         }
 
         void Shoot(Vector2 dir)

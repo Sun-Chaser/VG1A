@@ -118,6 +118,7 @@ public class MenuController : MonoBehaviour
             SoundManager.instance?.PlayLevelUpClip();
             // textSpeed.text = "Cost: " + GameController.instance.SpeedLevel ;
             CheckAllMaxStates();
+            UpdateUpgradePointsDisplay();
             UpdateButtonsInteractable();
         }
     }
@@ -127,7 +128,7 @@ public class MenuController : MonoBehaviour
         if (GameController.instance.FireballLevel < GameController.instance.MaxFireballLevel
             && GameController.instance.TrySpendUpgradePoint())
         {
-            PlayerMovement.instance.fireNum += 1;
+            PlayerMovement.instance.fireDamage += 10;
             GameController.instance.FireballLevel++;
 
             SoundManager.instance?.PlayLevelUpClip();

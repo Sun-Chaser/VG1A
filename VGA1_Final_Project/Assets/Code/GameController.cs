@@ -114,6 +114,13 @@ namespace Player
 
         private bool _bossSequenceStarted = false;
         private bool _resultsQueued = false;
+        
+        // ---- Speed buff stack state ----
+        private struct SpeedBuff { public float multiplier; public float endTime; }
+        private readonly List<SpeedBuff> _speedBuffs = new();
+        private bool  _hasSpeedBaseline = false;
+        private float _baseWalkSpeed = 0f;
+        private float _baseSpeed     = 0f;
 
         // ---------------- Unity lifecycle ----------------
         private void Awake()
@@ -844,34 +851,99 @@ namespace Player
             int r = s % 60;
             return r < 10 ? $"{m}:0{r}" : $"{m}:{r}";
         }
-
-        // =====================================================================
-        // // Boss sequence
-        // // =====================================================================
+        
+        /// <summary>
+        /// Apply a temporary multiplicative speed boost. Stacks with others.
+        /// </summary>
         public void ApplyTempSpeed(float multiplier, float duration)
         {
-            StartCoroutine(TempSpeedCoroutine(multiplier, duration));
-        }
+            var pm = PlayerHealth.instance;
+            if (pm == null) return;
 
-        private IEnumerator TempSpeedCoroutine(float multiplier, float duration)
-        {
-
-            float originalWalkSpeed = PlayerMovement.instance.walkSpeed;
-            float originalSpeed = PlayerMovement.instance.Speed;
-            PlayerMovement.instance.walkSpeed = multiplier * originalWalkSpeed;
-            PlayerMovement.instance.Speed = multiplier * originalSpeed;
-
-            float t = 0f;
-            while (t < duration)
+            // Capture baseline once, when the first buff starts
+            if (!_hasSpeedBaseline)
             {
-                t += Time.deltaTime;
-                yield return null;
+                _baseWalkSpeed = pm.WalkSpeed;
+                _baseSpeed     = pm.Speed;
+                _hasSpeedBaseline = true;
             }
 
-            // restore
-            // If multiple boosts can overlap, you may want a stacking system.
-            PlayerMovement.instance.Speed = originalSpeed;
-            PlayerMovement.instance.walkSpeed = originalWalkSpeed;
+            var buff = new SpeedBuff
+            {
+                multiplier = Mathf.Max(0f, multiplier),
+                endTime    = Time.time + Mathf.Max(0f, duration)
+            };
+            _speedBuffs.Add(buff);
+
+            // Recompute immediately with the new buff included
+            RecomputeSpeedFromBuffs();
+
+            // Start expiry watcher for this specific buff
+            StartCoroutine(ExpireSpeedBuff(buff.endTime));
+        }
+
+        /// <summary>
+        /// Waits until the given endTime, then removes the expired buff and recomputes.
+        /// </summary>
+        private IEnumerator ExpireSpeedBuff(float endTime)
+        {
+            // Wait until expiry time (game-time; use unscaledTime if you want it to tick while paused)
+            while (Time.time < endTime) yield return null;
+
+            // Remove all buffs that are expired (in case multiple ended while paused)
+            float now = Time.time;
+            for (int i = _speedBuffs.Count - 1; i >= 0; i--)
+                if (_speedBuffs[i].endTime <= now)
+                    _speedBuffs.RemoveAt(i);
+
+            RecomputeSpeedFromBuffs();
+        }
+
+        /// <summary>
+        /// Multiplies the baseline by all active multipliers. Restores baseline when empty.
+        /// </summary>
+        private void RecomputeSpeedFromBuffs()
+        {
+            var pm = PlayerHealth.instance;
+            if (pm == null) return;
+
+            if (_speedBuffs.Count == 0)
+            {
+                // No active buffs: restore baseline and clear snapshot
+                if (_hasSpeedBaseline)
+                {
+                    pm.SetWalkSpeed(_baseWalkSpeed);
+                    pm.SetSpeed(_baseSpeed);
+                    _hasSpeedBaseline = false;
+                }
+                return;
+            }
+
+            // Product of all multipliers (e.g., 1.5x and 1.2x -> 1.8x)
+            float m = 1f;
+            for (int i = 0; i < _speedBuffs.Count; i++)
+                m *= _speedBuffs[i].multiplier;
+
+            pm.SetWalkSpeed(_baseWalkSpeed * m);
+            pm.SetSpeed(_baseSpeed * m);
+        }
+        
+        public void OnPermanentSpeedChanged(float newWalkBase, float newSpeedBase)
+        {
+            var pm = PlayerHealth.instance;
+            if (pm == null) return;
+
+            if (_hasSpeedBaseline)
+            {
+                _baseWalkSpeed = newWalkBase;
+                _baseSpeed     = newSpeedBase;
+                RecomputeSpeedFromBuffs(); // keep current buffs effective
+            }
+            else
+            {
+                pm.SetWalkSpeed(newWalkBase);
+                pm.SetSpeed(newSpeedBase);
+            }
         }
     }
 }

@@ -156,7 +156,7 @@ namespace EnermyTest
         {
             if (other.GetComponentInParent<FireBall>())
             {
-                TakeDamage(10);
+                TakeDamage(PlayerMovement.instance.fireDamage);
             }
         }
         
