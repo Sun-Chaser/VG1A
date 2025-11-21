@@ -24,6 +24,8 @@ namespace Player
         [SerializeField]
         float speed;
         [SerializeField]
+        float walkSpeed = 2.0f;
+        [SerializeField]
         private float maxSpeed;
 
         public void Awake()
@@ -35,7 +37,7 @@ namespace Player
         public float MaxHealth { get { return maxHealth; } }
         public float MaxTotalHealth { get { return maxTotalHealth; } }
         public float Speed { get { return speed; } }
-        public float MaxSpeed { get { return maxSpeed; } }
+        public float WalkSpeed { get { return walkSpeed; } }
         
         public void Heal(float health)
         {
@@ -85,7 +87,21 @@ namespace Player
 
         public void AddSpeed()
         {
+            walkSpeed += 0.1f;
             speed += 0.1f;
+            GameController.instance.OnPermanentSpeedChanged(walkSpeed, speed);
+        }
+
+        public void SetSpeed(float newSpeed)
+        {
+            if (newSpeed >= maxSpeed) return;
+            speed = newSpeed;
+        }
+
+        public void SetWalkSpeed(float newSpeed)
+        {
+            if (newSpeed >= maxSpeed) return;
+            walkSpeed = newSpeed;
         }
     }
 }
