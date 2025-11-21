@@ -5,8 +5,8 @@ using Player;
 public class PickupSpeedBoost : MonoBehaviour
 {
     [Header("Effect")]
-    public float multiplier = 2f;   // 100% faster
-    public float duration   = 8f;     // seconds
+    public float multiplier = 1.5f;   // 50% faster
+    public float duration   = 5f;     // seconds
 
     [Header("Interaction")]
     public string playerTag = "Player";
