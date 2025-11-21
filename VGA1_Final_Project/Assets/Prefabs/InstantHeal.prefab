@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5844040050048818030}
   - component: {fileID: 5965202541757898243}
   - component: {fileID: 5805817642531766311}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: InstantHeal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
