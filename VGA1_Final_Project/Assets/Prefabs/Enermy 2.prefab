@@ -464,7 +464,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf2cd940ecc8e04498d6cd59f40aa70b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 2000
+  maxHealth: 1000
   currentHealth: 0
   moveSpeed: 1
   shootInterval: 3
