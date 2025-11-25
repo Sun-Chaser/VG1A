@@ -59,6 +59,12 @@ namespace Player
         public int xpLinearB = 20;
         private int _xpForNext;
 
+        public GameObject[] playerPrefabs;
+        public GameObject selectPanelGO;
+        public float swapWindowSeconds = 5f;
+        private bool canSwap = false;
+        private GameObject _currentPlayer;
+
         // ---------------- Boss ----------------
         [Header("Boss")]
         public Transform bossSpawnPoint;
@@ -131,6 +137,10 @@ namespace Player
 
             if (textTimer) textTimer.text = "2:00";
             if (textBossPrep) textBossPrep.gameObject.SetActive(false);
+
+            ShowSelectPanel(true);
+            canSwap = true;
+            StartCoroutine(SelectionWindow());
 
             // Spawner
             _spawnCheckTimer = spawnCheckInterval;
@@ -691,6 +701,76 @@ namespace Player
             // Time ran out -> end as well
             EndResultsAndSaveHighscore();
 
+        }
+
+        private IEnumerator SelectionWindow()
+        {
+            float t = swapWindowSeconds;
+            while (t > 0f)
+            {
+                t -= Time.deltaTime;
+                yield return null;
+            }
+            canSwap = false;
+            ShowSelectPanel(false);
+        }
+
+        private void ShowSelectPanel(bool on)
+        {
+            if (selectPanelGO) selectPanelGO.SetActive(on);
+        }
+
+        public void PickHero0() { TrySwapTo(0); }
+        public void PickHero1() { TrySwapTo(1); }
+        public void PickHero2() { TrySwapTo(2); }
+
+        private void TrySwapTo(int index)
+        {
+            if (!canSwap) return;
+            if (playerPrefabs == null || index < 0 || index >= playerPrefabs.Length) return;
+
+            var oldPH = PlayerHealth.instance;
+
+            Transform curT = PlayerMovement.instance ? PlayerMovement.instance.transform
+                                                     : GameObject.FindWithTag("Player")?.transform;
+            Vector3 pos;
+            Quaternion rot;
+            if (curT != null)
+            {
+                pos = curT.position;
+                rot = curT.rotation;
+                _currentPlayer = curT.gameObject;
+            }
+            else if (playerSpawnPoints != null && playerSpawnPoints.Length > 0)
+            {
+                pos = playerSpawnPoints[0].position;
+                rot = playerSpawnPoints[0].rotation;
+            }
+            else
+            {
+                pos = Vector3.zero;
+                rot = Quaternion.identity;
+            }
+
+            if (_currentPlayer != null) Destroy(_currentPlayer);
+
+            GameObject prefab = playerPrefabs[index];
+            GameObject newPlayer = Instantiate(prefab, pos, rot);
+            _currentPlayer = newPlayer;
+
+            var pm = newPlayer.GetComponent<PlayerMovement>();
+            if (pm != null && pm.cam == null && Camera.main != null) pm.cam = Camera.main;
+
+            var cf = Camera.main ? Camera.main.GetComponent<Cainos.PixelArtTopDown_Basic.CameraFollow>() : null;
+            if (cf != null) cf.target = newPlayer.transform;
+
+            if (oldPH != null) oldPH.onHealthChangedCallback -= UpdateHeartsHUD;
+            if (PlayerHealth.instance != null)
+            {
+                PlayerHealth.instance.onHealthChangedCallback -= UpdateHeartsHUD;
+                PlayerHealth.instance.onHealthChangedCallback += UpdateHeartsHUD;
+                UpdateHeartsHUD();
+            }
         }
 
         // =====================================================================

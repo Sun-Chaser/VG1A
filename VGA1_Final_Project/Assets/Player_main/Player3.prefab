@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: -1062465936462482434}
   - component: {fileID: 432183450675520411}
   m_Layer: 0
-  m_Name: Player
+  m_Name: Player3
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -78,7 +78,7 @@ SpriteRenderer:
   m_SortingLayerID: -921336025
   m_SortingLayer: 8
   m_SortingOrder: 999
-  m_Sprite: {fileID: -1920248660, guid: fdf56bf2c0b633940b834f68fddfc571, type: 3}
+  m_Sprite: {fileID: 1275952321, guid: 93fb1729ec474254d9d0a57db255e36f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -126,7 +126,7 @@ Animator:
   m_GameObject: {fileID: 5792930818333194311}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: ac44ec99ac9c47c4ab83043bd5f3d5ff, type: 2}
+  m_Controller: {fileID: 9100000, guid: 989f45321d194e5498159963250c95c8, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -151,7 +151,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cam: {fileID: 0}
   dir8: 0
-  fireballPrefab: {fileID: 1510347638462973449, guid: cf8d56f99afc67f42b1b228c2ff91a60,
+  fireballPrefab: {fileID: 6202462865118328157, guid: bc330a95b74500d4f883c68f56579840,
     type: 3}
   firePoint: {fileID: 0}
   fireNum: 1
@@ -174,7 +174,7 @@ MonoBehaviour:
   health: 3
   maxHealth: 5
   maxTotalHealth: 5
-  speed: 1
+  speed: 0.5
   maxSpeed: 5
 --- !u!70 &432183450675520411
 CapsuleCollider2D:

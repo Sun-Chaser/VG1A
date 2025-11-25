@@ -21,6 +21,8 @@ namespace Player
 
         public Camera cam;
 
+
+
         public int dir8;
 
         bool shiftHeld;
@@ -42,6 +44,8 @@ namespace Player
             animator = GetComponent<Animator>();
 
         }
+
+
 
         // Update is called once per frame
         void Update()
@@ -149,9 +153,9 @@ namespace Player
             var projCol = go.GetComponent<Collider2D>();
             if (myCol && projCol) Physics2D.IgnoreCollision(myCol, projCol, true);
         }
-
         private void Awake()
         {
+            if (cam == null) cam = Camera.main;
             instance = this;
         }
     }
