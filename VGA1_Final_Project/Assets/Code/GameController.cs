@@ -93,7 +93,7 @@ namespace Player
 
         [Tooltip("Minimum enemies to try to keep in scene (normal phase)")]
         public int minEnemies = 15;
-
+        
         [Tooltip("Capped prefab index start")]
         public int cappedGroupStart = 0;
         [Tooltip("Capped prefab index end")]
@@ -114,6 +114,13 @@ namespace Player
 
         private bool _bossSequenceStarted = false;
         private bool _resultsQueued = false;
+        
+        // ---- Speed buff stack state ----
+        private struct SpeedBuff { public float multiplier; public float endTime; }
+        private readonly List<SpeedBuff> _speedBuffs = new();
+        private bool  _hasSpeedBaseline = false;
+        private float _baseWalkSpeed = 0f;
+        private float _baseSpeed     = 0f;
 
         // ---------------- Unity lifecycle ----------------
         private void Awake()
@@ -444,7 +451,10 @@ namespace Player
                 if (index < 0) break;
 
                 Transform sp = spawnPoints[Random.Range(0, spawnPoints.Length)];
-                var inst = Instantiate(enemyPrefabs[index], sp.position, sp.rotation);
+                
+                Vector2 offset2D = Random.insideUnitCircle * 1.5f;
+                Vector3 spawnPos = sp.position + new Vector3(offset2D.x, offset2D.y, 0f);
+                var inst = Instantiate(enemyPrefabs[index], spawnPos, sp.rotation);
 
                 // adopt spawnpoint's sorting layer if present
                 var spSR = sp.GetComponent<SpriteRenderer>();
@@ -466,12 +476,61 @@ namespace Player
             // Available pool for enemy
             var eligible = BuildEligiblePrefabIndices();
             if (eligible.Count == 0) return -1;
-
+            
+            /*
             // Random spawn
             int pick = eligible[Random.Range(0, eligible.Count)];
             return pick;
-        }
+            */
+            
+            // How far into the normal phase we are: 0 (start) -> 1 (timeLimit)
+            float progress = 0f;
+            if (timeLimit > 0f)
+                progress = timeElapsed / timeLimit;
 
+            // Use weighted selection based on time progress & prefab index
+            return WeightedPickByDifficulty(eligible, progress);
+        }
+        
+        private int WeightedPickByDifficulty(List<int> eligible, float progress)
+        {
+            if (eligible == null || eligible.Count == 0)
+                return -1;
+    
+            if (eligible.Count == 1)
+                return eligible[0];
+            
+            float[] earlyWeights = { 85f, 5f, 0f, 0f };
+            float[] lateWeights = { 20f, 25f, 25f, 30f };
+    
+            float[] weights = new float[eligible.Count];
+            float totalWeight = 0f;
+    
+            for (int i = 0; i < eligible.Count; i++)
+            {
+                int prefabIndex = eligible[i];
+                int tier = Mathf.Min(prefabIndex, earlyWeights.Length - 1);
+                float weight = Mathf.Lerp(earlyWeights[tier], lateWeights[tier], progress);
+                weights[i] = weight;
+                totalWeight += weight;
+                
+            }
+    
+            float randomValue = UnityEngine.Random.Range(0f, totalWeight);
+    
+            float cumulative = 0f;
+            for (int i = 0; i < eligible.Count; i++)
+            {
+                cumulative += weights[i];
+                if (randomValue <= cumulative)
+                {
+                    return eligible[i];
+                }
+            }
+    
+            return eligible[eligible.Count - 1];
+        }
+        
 
         private int CountPrefabIndex(int prefabIndex)
         {
@@ -509,8 +568,20 @@ namespace Player
         public void RegisterEnemyDeath(GameObject enemy)
         {
             if (!enemy) return;
+            RegisterEnemyDeath(enemy, enemy.transform.position);
+        }
+        
+        public void RegisterEnemyDeath(GameObject enemy, Vector3 deathPos)
+        {
+            if (!enemy) return;
+
+            // Remove from tracking
             _activeEnemies.Remove(enemy);
             _prefabIndexByEnemy.Remove(enemy);
+
+            // Try chest drop if the enemy has a dropper
+            var dropper = enemy.GetComponent<EnemyLootDropper>();
+            if (dropper) dropper.TryDrop(deathPos);
         }
         
         private int CountCappedGroupAlive()
@@ -782,6 +853,100 @@ namespace Player
             int m = s / 60;
             int r = s % 60;
             return r < 10 ? $"{m}:0{r}" : $"{m}:{r}";
+        }
+        
+        /// <summary>
+        /// Apply a temporary multiplicative speed boost. Stacks with others.
+        /// </summary>
+        public void ApplyTempSpeed(float multiplier, float duration)
+        {
+            var pm = PlayerHealth.instance;
+            if (pm == null) return;
+
+            // Capture baseline once, when the first buff starts
+            if (!_hasSpeedBaseline)
+            {
+                _baseWalkSpeed = pm.WalkSpeed;
+                _baseSpeed     = pm.Speed;
+                _hasSpeedBaseline = true;
+            }
+
+            var buff = new SpeedBuff
+            {
+                multiplier = Mathf.Max(0f, multiplier),
+                endTime    = Time.time + Mathf.Max(0f, duration)
+            };
+            _speedBuffs.Add(buff);
+
+            // Recompute immediately with the new buff included
+            RecomputeSpeedFromBuffs();
+
+            // Start expiry watcher for this specific buff
+            StartCoroutine(ExpireSpeedBuff(buff.endTime));
+        }
+
+        /// <summary>
+        /// Waits until the given endTime, then removes the expired buff and recomputes.
+        /// </summary>
+        private IEnumerator ExpireSpeedBuff(float endTime)
+        {
+            // Wait until expiry time (game-time; use unscaledTime if you want it to tick while paused)
+            while (Time.time < endTime) yield return null;
+
+            // Remove all buffs that are expired (in case multiple ended while paused)
+            float now = Time.time;
+            for (int i = _speedBuffs.Count - 1; i >= 0; i--)
+                if (_speedBuffs[i].endTime <= now)
+                    _speedBuffs.RemoveAt(i);
+
+            RecomputeSpeedFromBuffs();
+        }
+
+        /// <summary>
+        /// Multiplies the baseline by all active multipliers. Restores baseline when empty.
+        /// </summary>
+        private void RecomputeSpeedFromBuffs()
+        {
+            var pm = PlayerHealth.instance;
+            if (pm == null) return;
+
+            if (_speedBuffs.Count == 0)
+            {
+                // No active buffs: restore baseline and clear snapshot
+                if (_hasSpeedBaseline)
+                {
+                    pm.SetWalkSpeed(_baseWalkSpeed);
+                    pm.SetSpeed(_baseSpeed);
+                    _hasSpeedBaseline = false;
+                }
+                return;
+            }
+
+            // Product of all multipliers (e.g., 1.5x and 1.2x -> 1.8x)
+            float m = 1f;
+            for (int i = 0; i < _speedBuffs.Count; i++)
+                m *= _speedBuffs[i].multiplier;
+
+            pm.SetWalkSpeed(_baseWalkSpeed * m);
+            pm.SetSpeed(_baseSpeed * m);
+        }
+        
+        public void OnPermanentSpeedChanged(float newWalkBase, float newSpeedBase)
+        {
+            var pm = PlayerHealth.instance;
+            if (pm == null) return;
+
+            if (_hasSpeedBaseline)
+            {
+                _baseWalkSpeed = newWalkBase;
+                _baseSpeed     = newSpeedBase;
+                RecomputeSpeedFromBuffs(); // keep current buffs effective
+            }
+            else
+            {
+                pm.SetWalkSpeed(newWalkBase);
+                pm.SetSpeed(newSpeedBase);
+            }
         }
     }
 }

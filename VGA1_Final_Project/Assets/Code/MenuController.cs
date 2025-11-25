@@ -100,7 +100,7 @@ public class MenuController : MonoBehaviour
             GameController.instance.HealthLevel++;
 
             SoundManager.instance?.PlayLevelUpClip();
-            textHealth.text = "Cost: " + GameController.instance.HealthLevel + " point";
+            // textHealth.text = "Cost: " + GameController.instance.HealthLevel ;
             CheckAllMaxStates();
             UpdateUpgradePointsDisplay();
             UpdateButtonsInteractable();
@@ -116,8 +116,9 @@ public class MenuController : MonoBehaviour
             GameController.instance.SpeedLevel++;
 
             SoundManager.instance?.PlayLevelUpClip();
-            textSpeed.text = "Cost: " + GameController.instance.SpeedLevel + " point";
+            // textSpeed.text = "Cost: " + GameController.instance.SpeedLevel ;
             CheckAllMaxStates();
+            UpdateUpgradePointsDisplay();
             UpdateButtonsInteractable();
         }
     }
@@ -127,11 +128,11 @@ public class MenuController : MonoBehaviour
         if (GameController.instance.FireballLevel < GameController.instance.MaxFireballLevel
             && GameController.instance.TrySpendUpgradePoint())
         {
-            PlayerMovement.instance.fireNum += 1;
+            PlayerMovement.instance.fireDamage += 10;
             GameController.instance.FireballLevel++;
 
             SoundManager.instance?.PlayLevelUpClip();
-            textFireBallNum.text = "Cost: " + GameController.instance.FireballLevel + " point";
+            // textFireBallNum.text = "Cost: " + GameController.instance.FireballLevel ;
             CheckAllMaxStates();
             UpdateUpgradePointsDisplay();
             UpdateButtonsInteractable();
@@ -147,7 +148,7 @@ public class MenuController : MonoBehaviour
             GameController.instance.FireballSpeedLevel++;
 
             SoundManager.instance?.PlayLevelUpClip();
-            textFireBallSpeed.text = "Cost:  " + GameController.instance.FireballSpeedLevel +" point";
+            // textFireBallSpeed.text = "Cost:  " + GameController.instance.FireballSpeedLevel;
             CheckAllMaxStates();
             UpdateUpgradePointsDisplay();
             UpdateButtonsInteractable();
@@ -158,10 +159,10 @@ public class MenuController : MonoBehaviour
     private void RefreshShopUI()
     {
         // Default to point-based cost; MAX state will overwrite via CheckAllMaxStates()
-        if (textHealth)        textHealth.text        = "Cost: 1 point";
-        if (textSpeed)         textSpeed.text         = "Cost: 1 point";
-        if (textFireBallNum)   textFireBallNum.text   = "Cost: 1 point";
-        if (textFireBallSpeed) textFireBallSpeed.text = "Cost: 1 point";
+        if (textHealth)        textHealth.text        = "Cost: 1";
+        if (textSpeed)         textSpeed.text         = "Cost: 1";
+        if (textFireBallNum)   textFireBallNum.text   = "Cost: 1";
+        if (textFireBallSpeed) textFireBallSpeed.text = "Cost: 1";
 
         UpdateButtonsInteractable();
     }
