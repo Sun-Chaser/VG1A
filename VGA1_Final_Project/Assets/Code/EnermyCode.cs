@@ -31,23 +31,27 @@ namespace EnermyTest
         public bool trackEnermy;
         public bool shootradial;
         public int burstCount;
-        
-        
+
+        void OnEnable() { TryAcquirePlayer(); }
         // Start is called before the first frame update
         void Start()
         {
             healthBar = GetComponentInChildren<EnermyHealthBar>();
             currentHealth = maxHealth;
             healthBar.SetMaxHealth(maxHealth);
-            
-            player = GameObject.FindGameObjectWithTag("Player").transform;
+
+            TryAcquirePlayer();
             shootTimer = shootInterval;
         }
 
         // Update is called once per frame
         void Update()
         {
-            if (!player) return;
+            if (!player)
+            {
+                TryAcquirePlayer();
+                if (!player) return;
+            }
 
             // Only act if player is close enough
             float dist = Vector2.Distance(player.position, transform.position);
@@ -87,7 +91,18 @@ namespace EnermyTest
                 rb.velocity = direction * projectileSpeed;
             }
         }
-        
+
+        void TryAcquirePlayer()
+        {
+            var go = GameObject.FindGameObjectWithTag("Player");
+            if (go) player = go.transform;
+        }
+
+        public void SetPlayer(Transform t)
+        {
+            player = t;
+        }
+
         void ShootRadial()
         {
             float angleStep = 360f / radialCount;

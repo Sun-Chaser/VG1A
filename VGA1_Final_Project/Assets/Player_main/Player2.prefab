@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: -1062465936462482434}
   - component: {fileID: 432183450675520411}
   m_Layer: 0
-  m_Name: Player
+  m_Name: Player2
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -78,7 +78,7 @@ SpriteRenderer:
   m_SortingLayerID: -921336025
   m_SortingLayer: 8
   m_SortingOrder: 999
-  m_Sprite: {fileID: -1920248660, guid: fdf56bf2c0b633940b834f68fddfc571, type: 3}
+  m_Sprite: {fileID: 1500730875, guid: 258ba7d3ac3c1a34888cf0144497463a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -126,7 +126,7 @@ Animator:
   m_GameObject: {fileID: 5792930818333194311}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: ac44ec99ac9c47c4ab83043bd5f3d5ff, type: 2}
+  m_Controller: {fileID: 9100000, guid: 23e008896c92f70498838b8e978dbc53, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -174,7 +174,7 @@ MonoBehaviour:
   health: 3
   maxHealth: 5
   maxTotalHealth: 5
-  speed: 1
+  speed: 0.5
   maxSpeed: 5
 --- !u!70 &432183450675520411
 CapsuleCollider2D:
