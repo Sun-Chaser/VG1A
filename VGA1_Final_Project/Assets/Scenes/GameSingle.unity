@@ -4049,6 +4049,9 @@ MonoBehaviour:
   upgradePoints: 0
   xpLinearA: 10
   xpLinearB: 10
+  playerPrefabs: []
+  selectPanelGO: {fileID: 0}
+  swapWindowSeconds: 5
   bossSpawnPoint: {fileID: 440847033}
   bossPrefab: {fileID: 6324465741522995264, guid: adc4bf08e4ddbb24798b11614c6e4879,
     type: 3}
