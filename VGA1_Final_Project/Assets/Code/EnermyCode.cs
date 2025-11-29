@@ -151,16 +151,20 @@ namespace EnermyTest
             }
             healthBar.SetHealth(currentHealth);
         }
-        
+
         void OnTriggerEnter2D(Collider2D other)
         {
-            if (other.GetComponentInParent<FireBall>())
+ 
+            GameObject hit = other.attachedRigidbody ? other.attachedRigidbody.gameObject : other.gameObject;
+
+            if (hit.CompareTag("PlayerProjectile")) 
             {
                 TakeDamage(PlayerMovement.instance.fireDamage);
+
             }
         }
-        
-        
+
+
     }
 }
 
