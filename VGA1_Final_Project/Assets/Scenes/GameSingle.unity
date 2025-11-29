@@ -45075,7 +45075,7 @@ PrefabInstance:
     - target: {fileID: 8758509563189589875, guid: 91ffb977058ae5943b6ea46d76ee8a17,
         type: 3}
       propertyPath: fireDamage
-      value: 10
+      value: 15
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
