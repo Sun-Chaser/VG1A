@@ -149,13 +149,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 075e9e7d8d95b3b42a8714ab4eb516d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Speed: 0
   cam: {fileID: 0}
   dir8: 0
   fireballPrefab: {fileID: 1510347638462973449, guid: cf8d56f99afc67f42b1b228c2ff91a60,
     type: 3}
   firePoint: {fileID: 0}
-  fireNum: 1
-  fireSpeed: 6
+  fireDamage: 15
+  fireSpeed: 4
   fireCooldown: 1
   cachedAimDir: {x: 1, y: 0}
   isPaused: 0
@@ -171,11 +172,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4dba3bbaf31b44159f9e40967c2c3c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 3
+  health: 5
   maxHealth: 5
-  maxTotalHealth: 5
-  speed: 1
-  maxSpeed: 5
+  maxTotalHealth: 10
+  speed: 0
+  walkSpeed: 2
+  maxSpeed: 10
 --- !u!70 &432183450675520411
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -208,6 +210,6 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.0024261475, y: -0.14312142}
-  m_Size: {x: 0.507781, y: 0.9444233}
+  m_Offset: {x: -0.0024261475, y: -0.23468474}
+  m_Size: {x: 0.507781, y: 0.7612967}
   m_Direction: 0
