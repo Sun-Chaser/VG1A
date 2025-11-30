@@ -152,11 +152,11 @@ MonoBehaviour:
   Speed: 0
   cam: {fileID: 0}
   dir8: 0
-  fireballPrefab: {fileID: 1510347638462973449, guid: cf8d56f99afc67f42b1b228c2ff91a60,
+  fireballPrefab: {fileID: 6202462865118328157, guid: 10c3159e1298db945afb441018f9f477,
     type: 3}
   firePoint: {fileID: 0}
-  fireDamage: 10
-  fireSpeed: 6
+  fireDamage: 30
+  fireSpeed: 0.1
   fireCooldown: 1
   cachedAimDir: {x: 1, y: 0}
   isPaused: 0
@@ -210,6 +210,6 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.0024261475, y: -0.14312142}
-  m_Size: {x: 0.507781, y: 0.9444233}
+  m_Offset: {x: 0.009782314, y: -0.27131}
+  m_Size: {x: 0.6135876, y: 0.86710376}
   m_Direction: 0
