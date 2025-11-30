@@ -128,7 +128,6 @@ public class MenuController : MonoBehaviour
         if (GameController.instance.FireballLevel < GameController.instance.MaxFireballLevel
             && GameController.instance.TrySpendUpgradePoint())
         {
-            PlayerMovement.instance.fireDamage += 10;
             GameController.instance.FireballLevel++;
 
             SoundManager.instance?.PlayLevelUpClip();
