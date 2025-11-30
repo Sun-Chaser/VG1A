@@ -15,6 +15,7 @@ public class FireBall : MonoBehaviour
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player")) return;
+        if (other.CompareTag("EnermyProjectile")) return;
 
         Destroy(gameObject);
     }
