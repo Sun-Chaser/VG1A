@@ -121,10 +121,23 @@ namespace Player
 
 
         }
+        [SerializeField] float shotDelay = 0.5f;
 
         public void ShootEvent()
         {
-            Shoot(cachedAimDir);
+            StartCoroutine(ShootBurst(cachedAimDir));
+        }
+
+        IEnumerator ShootBurst(Vector2 dir)
+        {
+
+            int shots = Mathf.Max(1, GameController.instance.FireballLevel);
+
+            for (int i = 0; i < shots; i++)
+            {
+                Shoot(dir);
+                if (i < shots - 1) yield return new WaitForSeconds(shotDelay);
+            }
         }
 
         void Shoot(Vector2 dir)

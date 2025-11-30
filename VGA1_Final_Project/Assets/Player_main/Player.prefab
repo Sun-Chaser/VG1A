@@ -160,6 +160,7 @@ MonoBehaviour:
   fireCooldown: 1
   cachedAimDir: {x: 1, y: 0}
   isPaused: 0
+  shotDelay: 0.3
 --- !u!114 &-1062465936462482434
 MonoBehaviour:
   m_ObjectHideFlags: 0
