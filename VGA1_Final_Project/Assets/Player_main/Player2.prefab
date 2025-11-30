@@ -155,11 +155,12 @@ MonoBehaviour:
   fireballPrefab: {fileID: 6202462865118328157, guid: 10c3159e1298db945afb441018f9f477,
     type: 3}
   firePoint: {fileID: 0}
-  fireDamage: 30
+  fireDamage: 15
   fireSpeed: 0.1
   fireCooldown: 1
   cachedAimDir: {x: 1, y: 0}
   isPaused: 0
+  shotDelay: 0.2
 --- !u!114 &-1062465936462482434
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -176,7 +177,7 @@ MonoBehaviour:
   maxHealth: 5
   maxTotalHealth: 10
   speed: 0
-  walkSpeed: 2
+  walkSpeed: 1.7
   maxSpeed: 10
 --- !u!70 &432183450675520411
 CapsuleCollider2D:
