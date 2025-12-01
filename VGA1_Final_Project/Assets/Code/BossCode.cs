@@ -184,9 +184,9 @@ namespace EnermyTest
         
         void OnTriggerEnter2D(Collider2D other)
         {
-            if (other.GetComponentInParent<FireBall>())
+            if (((other.attachedRigidbody ? other.attachedRigidbody.gameObject : other.gameObject).CompareTag("PlayerProjectile")))
             {
-                TakeDamage(10);
+                TakeDamage(PlayerMovement.instance.fireDamage);
             }
         }
 

@@ -38,7 +38,7 @@ public class PickupAddTime : MonoBehaviour
         if (pickupSfx) AudioSource.PlayClipAtPoint(pickupSfx, transform.position, 1f);
 
         if (GameController.instance)
-            GameController.instance.timeLimit += 30;
+            GameController.instance.timeLimit += 10;
             
 
         Destroy(gameObject);

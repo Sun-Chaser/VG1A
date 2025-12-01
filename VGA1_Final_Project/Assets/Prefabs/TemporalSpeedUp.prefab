@@ -134,8 +134,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c96bd78c3e75421ab5478b1b421595ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  multiplier: 1.5
-  duration: 8
+  multiplier: 1.3
+  duration: 6
   playerTag: Player
   interactKey: 102
   promptOrHighlight: {fileID: 0}
