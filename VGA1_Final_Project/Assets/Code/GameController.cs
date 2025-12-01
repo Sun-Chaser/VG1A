@@ -232,15 +232,15 @@ namespace Player
             }
 
             // 2) Enough XP to upgrade?
-            if (xp > 50)
+            if (upgradePoints > 0)
             {
                 return "Remember press M to shop and level up";
             }
 
             // 3) Rotate fallback hints
             string[] fallbacks = {
-                "Press F to open chest",
-                "Hold Shift to speed up"
+                "Remember press F to open chest",
+                "Remember hold Shift to speed up"
             };
             string pick = fallbacks[_fallbackHintIndex % fallbacks.Length];
             _fallbackHintIndex++;

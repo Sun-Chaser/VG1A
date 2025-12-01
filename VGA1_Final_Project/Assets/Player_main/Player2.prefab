@@ -157,7 +157,7 @@ MonoBehaviour:
   firePoint: {fileID: 0}
   fireDamage: 15
   fireSpeed: 0.1
-  fireCooldown: 1
+  fireCooldown: 2
   cachedAimDir: {x: 1, y: 0}
   isPaused: 0
   shotDelay: 0.2
