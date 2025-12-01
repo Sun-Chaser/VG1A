@@ -157,7 +157,7 @@ MonoBehaviour:
   firePoint: {fileID: 0}
   fireDamage: 10
   fireSpeed: 10
-  fireCooldown: 0
+  fireCooldown: 0.5
   cachedAimDir: {x: 1, y: 0}
   isPaused: 0
   shotDelay: 0.2
@@ -177,7 +177,7 @@ MonoBehaviour:
   maxHealth: 3
   maxTotalHealth: 10
   speed: 0
-  walkSpeed: 2
+  walkSpeed: 3
   maxSpeed: 10
 --- !u!70 &432183450675520411
 CapsuleCollider2D:
